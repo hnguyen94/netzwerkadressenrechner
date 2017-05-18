@@ -3,8 +3,8 @@ public abstract class IPAddress {
     private String[] ipAddressBlocks;
     private Type type;
 
-    public void convertIPAddressTo(Type type){
-        IPAddress newIpAddress = Converter.convert(this,type);
+    public void convertIPAddressTo(Type type) {
+        IPAddress newIpAddress = Converter.convert(this, type);
         this.setIpAddressBlocks(newIpAddress.getIpAddressBlocks());
         this.setType(newIpAddress.getType());
     }

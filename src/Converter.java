@@ -3,9 +3,9 @@ import java.util.stream.IntStream;
 
 public class Converter {
 
-    private static HashMap<String, Integer> hexMap = createHexMap();
+    private static final HashMap<String, Integer> hexMap = createHexMap();
 
-    private static HashMap<String, Integer> createHexMap(){
+    private static HashMap<String, Integer> createHexMap() {
         HashMap<String, Integer> createdHexMap = new HashMap<>();
         createdHexMap.put("0", 0);
         createdHexMap.put("1", 1);
@@ -28,16 +28,16 @@ public class Converter {
     }
 
 
-    public static IPAddress convert(IPAddress ipAddress, Type type){
+    public static IPAddress convert(IPAddress ipAddress, Type type) {
         int ipAddressLength = ipAddress.getIpAddressBlocks().length;
         String[] newIPAddress = new String[ipAddressLength];
 
-        switch (type){
+        switch (type) {
             case BINARY:
-                IntStream.range(0,ipAddressLength).forEach(iteration -> {
+                IntStream.range(0, ipAddressLength).forEach(iteration -> {
                     String valueToConvert = ipAddress.getIpAddressBlocks()[iteration];
 
-                    if(ipAddress.getType() != Type.DECIMAL){
+                    if (ipAddress.getType() != Type.DECIMAL) {
                         valueToConvert = convertToDecimal(valueToConvert, ipAddress.getType());
                     }
 
@@ -46,10 +46,10 @@ public class Converter {
                 });
                 break;
             case HEX:
-                IntStream.range(0,ipAddressLength).forEach(iteration -> {
+                IntStream.range(0, ipAddressLength).forEach(iteration -> {
                     String valueToConvert = ipAddress.getIpAddressBlocks()[iteration];
 
-                    if(ipAddress.getType() != Type.DECIMAL){
+                    if (ipAddress.getType() != Type.DECIMAL) {
                         valueToConvert = convertToDecimal(valueToConvert, ipAddress.getType());
                     }
 
@@ -57,7 +57,7 @@ public class Converter {
                 });
                 break;
             case DECIMAL:
-                IntStream.range(0,ipAddressLength).forEach(iteration -> {
+                IntStream.range(0, ipAddressLength).forEach(iteration -> {
 
                     String valueToConvert = ipAddress.getIpAddressBlocks()[iteration];
                     newIPAddress[iteration] = convertToDecimal(valueToConvert, ipAddress.getType());
@@ -67,18 +67,18 @@ public class Converter {
             default:
                 return null;
         }
-        IPv4Address newIpv4Address = new IPv4Address(newIPAddress,type);
+        IPv4Address newIpv4Address = new IPv4Address(newIPAddress, type);
         return newIpv4Address;
     }
 
 
-    public static String convertToDecimal(String value, Type type ){
+    public static String convertToDecimal(String value, Type type) {
         StringBuilder decimalBuilder = new StringBuilder(value);
         String reverseValue = decimalBuilder.reverse().toString();
 
-        if(type == Type.BINARY){
-         return convertBinaryToDecimal(reverseValue);
-        }else if(type == Type.HEX){
+        if (type == Type.BINARY) {
+            return convertBinaryToDecimal(reverseValue);
+        } else if (type == Type.HEX) {
             return convertHexToDecimal(reverseValue);
         }
 
@@ -86,49 +86,49 @@ public class Converter {
     }
 
 
-    public static String convertDecimalToBinary(int value, StringBuilder binaryBuilder){
+    public static String convertDecimalToBinary(int value, StringBuilder binaryBuilder) {
         int restValue = value / 2;
-        StringBuilder updatedBinaryBuilder = binaryBuilder.insert(0,String.valueOf(value % 2));
-        if(restValue != 0){
+        StringBuilder updatedBinaryBuilder = binaryBuilder.insert(0, String.valueOf(value % 2));
+        if (restValue != 0) {
             return convertDecimalToBinary(restValue, updatedBinaryBuilder);
         }
         int restLength = 8 - updatedBinaryBuilder.length();
-        if( restLength != 0){
+        if (restLength != 0) {
             IntStream.range(0, restLength).forEach(i -> updatedBinaryBuilder.insert(0, "0"));
         }
         return updatedBinaryBuilder.toString();
     }
 
-    public static String convertBinaryToDecimal(String binaries){
+    public static String convertBinaryToDecimal(String binaries) {
         int sum = 0;
         int binaryValue;
-        for(int i = 0; i < binaries.length(); i++){
+        for (int i = 0; i < binaries.length(); i++) {
             binaryValue = Character.getNumericValue(binaries.charAt(i));
-            sum += (binaryValue * Math.pow(2,i));
+            sum += (binaryValue * Math.pow(2, i));
         }
 
         return String.valueOf(sum);
     }
 
-    public static String convertHexToDecimal(String hexCode){
+    public static String convertHexToDecimal(String hexCode) {
         int sum = 0;
-        for(int i = 0; i< hexCode.length(); i++){
-            sum += (hexMap.get(String.valueOf(hexCode.charAt(i))) * Math.pow(16,i));
+        for (int i = 0; i < hexCode.length(); i++) {
+            sum += (hexMap.get(String.valueOf(hexCode.charAt(i))) * Math.pow(16, i));
         }
         return String.valueOf(sum);
     }
 
-    public static String convertDecimalToHex(int value, StringBuilder hexBuilder){
+    public static String convertDecimalToHex(int value, StringBuilder hexBuilder) {
         int restValue = value / 16;
         String hexValue = hexMap.entrySet().stream().filter(entry -> entry.getValue() == value % 16).findFirst().get().getKey();
-        StringBuilder updatedHexBuilder = hexBuilder.insert(0,String.valueOf(hexValue));
+        StringBuilder updatedHexBuilder = hexBuilder.insert(0, String.valueOf(hexValue));
 
-        if(restValue != 0){
+        if (restValue != 0) {
             return convertDecimalToHex(restValue, updatedHexBuilder);
         }
 
         int restLength = 4 - updatedHexBuilder.length();
-        if( restLength != 0){
+        if (restLength != 0) {
             IntStream.range(0, restLength).forEach(i -> updatedHexBuilder.insert(0, "0"));
         }
 

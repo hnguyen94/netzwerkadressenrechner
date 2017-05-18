@@ -1,9 +1,6 @@
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
-/**
- * Created by michael on 15.05.17.
- */
 public class Converter {
 
     private static HashMap<String, Integer> hexMap = createHexMap();

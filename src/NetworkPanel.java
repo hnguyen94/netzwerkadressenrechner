@@ -13,6 +13,8 @@ public class NetworkPanel extends JPanel {
 
         // set the Network-Panel Layout to BorderLayout
         this.setLayout(new BorderLayout());
+        // Initialise TabbedPane
+        tabbedPane = networkCalculator.getTabbedPane();
 
 
 
@@ -35,30 +37,14 @@ public class NetworkPanel extends JPanel {
 
 
         // -------------------------------------------------------------------------------------------------------------
-        // Create tabbed Pane and add Action Listener
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Initialise TabbedPane
-        tabbedPane = networkCalculator.getTabbedPane();
-        tabbedPane.addChangeListener(e -> {
-            // If the Close Tab is clicked...
-            if (tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()).equals("X")) {
-                int currentIndex = tabbedPane.getSelectedIndex();
-                tabbedPane.setSelectedIndex(0);
-                tabbedPane.removeTabAt(currentIndex);
-                tabbedPane.removeTabAt(currentIndex - 1);
-            }
-        });
-
-
-
-        // -------------------------------------------------------------------------------------------------------------
         // Create JList with ListModel
         // -------------------------------------------------------------------------------------------------------------
 
         // JList for all Networks
+        JScrollPane scrollPane = new JScrollPane();
         DefaultListModel<String> model = new DefaultListModel<>();
         JList<String> networkList =  new JList<>(model);
+        scrollPane.setViewportView(networkList);
 
 
 
@@ -71,11 +57,11 @@ public class NetworkPanel extends JPanel {
         JButton openNetworkPanelButton = new JButton();
         openNetworkPanelButton.setText("Open");
         openNetworkPanelButton.addActionListener(e -> {
-            String index = networkList.getSelectedValue();
-            if (index != null && getTabIndexFromTitle(tabbedPane, index) == 0) {
-                SubnetPanel subnetPanel = new SubnetPanel(index);
-                tabbedPane.add(index, subnetPanel);
-                tabbedPane.setSelectedIndex(getTabIndexFromTitle(tabbedPane, index));
+            String network = networkList.getSelectedValue();
+            if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
+                SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator);
+                tabbedPane.add(network, subnetPanel);
+                tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
                 tabbedPane.add("X", new JPanel());
             }
         });
@@ -90,6 +76,11 @@ public class NetworkPanel extends JPanel {
         // -------------------------------------------------------------------------------------------------------------
         // Create InputFields with Labels for the Optical View and adding all of them to the NumberField-Panel
         // -------------------------------------------------------------------------------------------------------------
+
+        // Create New Network Button
+        JButton createNewNetworkButton = new JButton();
+        numberFieldsPanel.add(createNewNetworkButton);
+        numberFieldsPanel.add(new JLabel("a new Network"));
 
         // TextFields
         JTextField[] textFields = new JTextField[5];
@@ -115,55 +106,55 @@ public class NetworkPanel extends JPanel {
         // Create Create New Network Button and add Action Listener to create new Networks
         // -------------------------------------------------------------------------------------------------------------
 
-        // Create New Network Button
-        JButton createNewNetworkButton = new JButton();
         createNewNetworkButton.setText("Create");
         createNewNetworkButton.addActionListener(e -> {
 
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < textFields.length; i++) {
+                String currentBlock = textFields[i].getText();
+
                 if (i < textFields.length - 2) {
-                    stringBuilder.append(textFields[i].getText());
+                    stringBuilder.append(currentBlock);
                     stringBuilder.append(".");
                 } else if (i == textFields.length - 2) {
-                    stringBuilder.append(textFields[i].getText());
+                    stringBuilder.append(currentBlock);
                     stringBuilder.append("/");
                 } else {
-                    stringBuilder.append(textFields[i].getText());
+                    stringBuilder.append(currentBlock);
                 }
             }
 
             String newNetwork = stringBuilder.toString();
 
-            if (!model.contains(newNetwork)) {
-                model.addElement(newNetwork);
+            if (NetworkAddressValidator.validate(newNetwork)) {
+                if (!model.contains(newNetwork)) {
+                    model.addElement(newNetwork);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
+                            "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
+                        "Eingabefehler", JOptionPane.WARNING_MESSAGE);
             }
         });
-
 
 
         // -------------------------------------------------------------------------------------------------------------
         // Adding Elements to the different Panels
         // -------------------------------------------------------------------------------------------------------------
 
-        add(networkList, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openNetworkPanelButton);
+        openDeleteButtonPanel.add(new JLabel("or"));
         openDeleteButtonPanel.add(deleteNetworkPanelButton);
+        openDeleteButtonPanel.add(new JLabel("selected Network from List"));
         interactionPanel.add(openDeleteButtonPanel);
-        numberFieldsPanel.add(createNewNetworkButton);
         interactionPanel.add(numberFieldsPanel);
         add(interactionPanel, BorderLayout.PAGE_END);
 
     }
 
-    // Function to get the Tab Index from the Title
-    private int getTabIndexFromTitle(JTabbedPane tabbedPane, String title) {
-        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            if (tabbedPane.getTitleAt(i).equals(title)) {
-                return i;
-            }
-        }
-        return 0;
-    }
+
 
 }

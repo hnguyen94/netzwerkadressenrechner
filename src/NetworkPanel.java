@@ -4,6 +4,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class NetworkPanel extends JPanel {
 
@@ -45,6 +47,33 @@ public class NetworkPanel extends JPanel {
         DefaultListModel<String> model = new DefaultListModel<>();
         JList<String> networkList =  new JList<>(model);
         scrollPane.setViewportView(networkList);
+        networkList.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if (e.getClickCount() == 2) {
+                    openNewTab(networkList, networkCalculator);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
 
 
 
@@ -56,15 +85,7 @@ public class NetworkPanel extends JPanel {
         // Open Selected Network Button
         JButton openNetworkPanelButton = new JButton();
         openNetworkPanelButton.setText("Open");
-        openNetworkPanelButton.addActionListener(e -> {
-            String network = networkList.getSelectedValue();
-            if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
-                SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator);
-                tabbedPane.add(network, subnetPanel);
-                tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
-                tabbedPane.add("X", new JPanel());
-            }
-        });
+        openNetworkPanelButton.addActionListener(e -> openNewTab(networkList, networkCalculator));
 
         // Delete Selected Network Button
         JButton deleteNetworkPanelButton = new JButton();
@@ -163,6 +184,15 @@ public class NetworkPanel extends JPanel {
 
     }
 
+    private void openNewTab(JList networkList, NetworkCalculator networkCalculator){
+        String network = (String) networkList.getSelectedValue();
+        if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
+            SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator);
+            tabbedPane.add(network, subnetPanel);
+            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
+            tabbedPane.add("X", new JPanel());
+        }
+    }
 
 
 }

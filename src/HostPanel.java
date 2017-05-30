@@ -2,7 +2,11 @@ import javax.swing.*;
 
 public class HostPanel extends JPanel {
 
-    public HostPanel() {
+    public HostPanel(String subnet) {
+
+
+
+
 
 
     }

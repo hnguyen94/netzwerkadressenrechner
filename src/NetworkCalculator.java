@@ -1,5 +1,5 @@
 import javax.swing.*;
-
+import java.awt.event.WindowEvent;
 public class NetworkCalculator extends JFrame {
 
     private JTabbedPane tabbedPane = new JTabbedPane();
@@ -47,6 +47,19 @@ public class NetworkCalculator extends JFrame {
             }
         }
         return 0;
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        if(e.getID() == WindowEvent.WINDOW_CLOSING){
+            System.out.println("Windows is closing");
+            //TODO Save data to JSON File
+
+
+
+
+        }
+        super.processWindowEvent(e);
     }
 
 }

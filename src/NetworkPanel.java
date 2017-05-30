@@ -69,7 +69,15 @@ public class NetworkPanel extends JPanel {
         // Delete Selected Network Button
         JButton deleteNetworkPanelButton = new JButton();
         deleteNetworkPanelButton.setText("Delete");
-        deleteNetworkPanelButton.addActionListener(e -> model.removeElement(networkList.getSelectedValue()));
+        deleteNetworkPanelButton.addActionListener(e -> {
+            String currentSelectedTitle = networkList.getSelectedValue();
+            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle);
+            if (selectedTabIndex != 0) {
+                tabbedPane.remove(selectedTabIndex);
+                tabbedPane.remove(selectedTabIndex);
+            }
+            model.removeElement(currentSelectedTitle);
+        });
 
 
 

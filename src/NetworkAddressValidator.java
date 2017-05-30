@@ -1,5 +1,3 @@
-import java.security.spec.ECField;
-
 public class NetworkAddressValidator {
 
     private static final String NETWORK_ADDRESS =
@@ -9,7 +7,7 @@ public class NetworkAddressValidator {
             "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/" +
             "([1-9]|1[0-9]|2[0-9]|3[0-2])$";
 
-    public static boolean validate(String network_address) {
+    public static boolean  validate(String network_address) {
 
         return network_address.matches(NETWORK_ADDRESS);
 

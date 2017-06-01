@@ -1,3 +1,5 @@
+package gui;
+
 import javax.swing.*;
 
 public class HostPanel extends JPanel {

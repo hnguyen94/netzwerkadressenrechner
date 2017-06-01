@@ -1,3 +1,5 @@
+package gui;
+
 public class NetworkAddressValidator {
 
     private static final String NETWORK_ADDRESS =

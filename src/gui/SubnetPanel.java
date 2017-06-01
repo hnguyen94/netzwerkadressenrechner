@@ -1,9 +1,10 @@
+package gui;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class SubnetPanel extends JPanel {
 

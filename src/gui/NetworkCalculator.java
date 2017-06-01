@@ -1,7 +1,10 @@
 package gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ public class NetworkCalculator extends JFrame {
 
     private JTabbedPane tabbedPane = new JTabbedPane();
 
-    public NetworkCalculator(String title, JSONArray data) {
+    public NetworkCalculator(String title, JSONArray data) throws IOException {
 
         // -------------------------------------------------------------------------------------------------------------
         // Add Action Listener to the TabbedPane to make it possible to close Tabs via the X-Tab
@@ -32,6 +35,14 @@ public class NetworkCalculator extends JFrame {
         tabbedPane.addTab("Netzwerke", networkPanel);
 
         // Set default Windows specifications
+        try {
+            Image image = new ImageIcon("network_calculator.png").getImage();
+            System.out.println("image");
+            setIconImage(image);
+        } catch(Exception e){
+            System.out.println("Appilcation icon not found");
+        }
+
         setSize(600, 600);
         setLocationRelativeTo(null);
         setTitle(title);

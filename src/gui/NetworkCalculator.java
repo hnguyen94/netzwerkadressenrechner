@@ -4,11 +4,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
+//import com.apple.eawt.Application;
 import org.json.simple.*;
 
 public class NetworkCalculator extends JFrame {
@@ -35,17 +39,14 @@ public class NetworkCalculator extends JFrame {
         tabbedPane.addTab("Netzwerke", networkPanel);
 
         // Set default Windows specifications
-        try {
-            Image image = new ImageIcon("network_calculator.png").getImage();
-            System.out.println("image");
-            setIconImage(image);
-        } catch(Exception e){
-            System.out.println("Appilcation icon not found");
-        }
 
         setSize(600, 600);
         setLocationRelativeTo(null);
         setTitle(title);
+
+        setIconImage(ImageIO.read(new File("resources/network_calculator.png")));
+
+        //Application.getApplication().setDockIconImage(new ImageIcon("network_calculator.png").getImage());
 
         add(tabbedPane);
 

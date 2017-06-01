@@ -2,11 +2,24 @@ package logic.IPv4;
 
 import logic.Type;
 
+import java.util.Arrays;
+
 public class IPv4Net {
     private IPv4Address networkIpAddress;
     private IPv4Address subnetmask;
     private int suffix;
     private int maxAmountHosts;
+
+    public IPv4Net(){
+
+    }
+
+    public IPv4Net(int suffix, IPv4Address networkIpAddress){
+        this.setSuffix(suffix);
+        this.setNetworkIpAddress(networkIpAddress);
+        this.setSubnetmask(createSubnetmaskBy(suffix));
+        this.setMaxAmountHosts(getSubnetmask());
+    }
 
     public void setMaxAmountHosts(IPv4Address subnetMask){
         IPv4Address netmaskBinary = (IPv4Address) subnetMask.convertIPAddressTo(Type.BINARY);
@@ -47,6 +60,10 @@ public class IPv4Net {
         String[] ipAddressBlocks = binarySubnetMaskString.split("\\.");
 
         return (IPv4Address) new IPv4Address(ipAddressBlocks, Type.BINARY).convertIPAddressTo(Type.DECIMAL);
+    }
+
+    public String toString(){
+       return networkIpAddress.convertIpv4ToString() + "/" + getSuffix();
     }
 
     public IPv4Address getSubnetmask() {

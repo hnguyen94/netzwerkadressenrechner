@@ -1,4 +1,4 @@
-import gui.NetworkAddressValidator;
+import view.NetworkAddressValidator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

@@ -14,6 +14,7 @@ public class IPv4Network extends IPv4Net{
 
     }
 
+
     public IPv4Network(int suffix, IPv4Address networkIPAddress){
         super.setSuffix(suffix);
         super.setNetworkIpAddress(networkIPAddress);

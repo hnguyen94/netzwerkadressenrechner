@@ -1,6 +1,9 @@
 package logic;
 
 import logic.IPv4.IPv4Address;
+import logic.IPv4.IPv4Net;
+import logic.IPv4.IPv4Network;
+import logic.IPv4.IPv4Subnet;
 
 import java.util.HashMap;
 import java.util.stream.IntStream;
@@ -154,5 +157,27 @@ public class Converter {
         }
 
         return ipAddress;
+    }
+
+    public static IPv4Subnet convertStringToIpv4Subnet(String network){
+
+        String[] ipAndSuffix = network.split("\\/");
+
+        String[] ipAddress = ipAndSuffix[0].split("\\.");
+
+        int suffix = Integer.parseInt(ipAndSuffix[1]);
+
+        return new IPv4Subnet(suffix,new IPv4Address(ipAddress,Type.DECIMAL));
+    }
+
+    public static IPv4Network convertStringToIpv4Network(String network){
+
+        String[] ipAndSuffix = network.split("\\/");
+
+        String[] ipAddress = ipAndSuffix[0].split("\\.");
+
+        int suffix = Integer.parseInt(ipAndSuffix[1]);
+
+        return new IPv4Network(suffix,new IPv4Address(ipAddress,Type.DECIMAL));
     }
 }

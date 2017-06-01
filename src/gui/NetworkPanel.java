@@ -65,7 +65,7 @@ public class NetworkPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
 
                 if (e.getClickCount() == 2) {
-                    openNewTab(networkList, networkCalculator);
+                    openNewSubnet(networkList, networkCalculator);
                 }
             }
 
@@ -99,7 +99,7 @@ public class NetworkPanel extends JPanel {
         JButton openNetworkPanelButton = new JButton();
         openNetworkPanelButton.setText("Open");
 
-        openNetworkPanelButton.addActionListener(e -> openNewTab(networkList, networkCalculator));
+        openNetworkPanelButton.addActionListener(e -> openNewSubnet(networkList, networkCalculator));
 
         // Delete Selected Network Button
         JButton deleteNetworkPanelButton = new JButton();
@@ -206,7 +206,7 @@ public class NetworkPanel extends JPanel {
         return subnetPanels;
     }
 
-    private void openNewTab(JList networkList, NetworkCalculator networkCalculator){
+    private void openNewSubnet(JList networkList, NetworkCalculator networkCalculator){
         String network = (String) networkList.getSelectedValue();
         if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
             SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator, data);

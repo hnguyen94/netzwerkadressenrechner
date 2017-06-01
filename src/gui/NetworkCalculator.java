@@ -64,6 +64,7 @@ public class NetworkCalculator extends JFrame {
 
             DefaultListModel networkList = NetworkPanel.getModel();
             ArrayList<SubnetPanel> subnetPanels = NetworkPanel.getSubnetPanels();
+            ArrayList<HostPanel> hostPanels = SubnetPanel.getHostPanels();
 
             for (int i = 0; i < networkList.getSize(); i++) {
                 JSONObject network = new JSONObject();
@@ -71,13 +72,45 @@ public class NetworkCalculator extends JFrame {
                 network.put("id", networkString);
                 JSONArray subnets = new JSONArray();
                 for (SubnetPanel subnetPanel : subnetPanels) {
-                    String subnetTitle = subnetPanel.getNetworkTitle();
-                    if (networkString.equals(subnetTitle)) {
+                    String networkTitle = subnetPanel.getNetworkTitle();
+                    if (networkString.equals(networkTitle)) {
                         DefaultListModel subnetList = subnetPanel.getModel();
                         for (int j = 0; j < subnetList.getSize(); j++) {
                             String subnetString = subnetList.getElementAt(j).toString();
+
+
+                            JSONArray hosts = new JSONArray();
+                            for (HostPanel hostPanel: hostPanels) {
+                                String subnetTitle = hostPanel.getSubnetTitle();
+
+                                if (subnetString.equals(subnetTitle)) {
+                                    DefaultListModel hostList = hostPanel.getHostModel();
+                                    DefaultListModel noteList = hostPanel.getNotesModel();
+
+                                    for (int k = 0; k < hostList.getSize(); k++) {
+                                        String hostString = hostList.getElementAt(k).toString();
+                                        String noteString = noteList.getElementAt(k).toString();
+
+                                        JSONObject host = new JSONObject();
+                                        host.put("host", hostString);
+                                        host.put("note", noteString);
+                                        hosts.add(host);
+
+
+                                    }
+
+
+                                }
+
+
+                            }
+
+
+
+
                             JSONObject subnet = new JSONObject();
                             subnet.put("subnet", subnetString);
+                            subnet.put("hosts", hosts);
                             subnets.add(subnet);
                         }
                     }

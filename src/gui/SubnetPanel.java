@@ -5,6 +5,9 @@ import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class SubnetPanel extends JPanel {
 
@@ -13,9 +16,13 @@ public class SubnetPanel extends JPanel {
 
     private DefaultListModel<String> model = new DefaultListModel<>();
 
+    private static ArrayList<HostPanel> hostPanels = new ArrayList<>();
+    private JSONArray data;
+
 
 
     public SubnetPanel(String network, NetworkCalculator networkCalculator, JSONArray data) {
+        this.data = data;
 
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
@@ -68,6 +75,35 @@ public class SubnetPanel extends JPanel {
         JList<String> subnetList =  new JList<>(model);
         scrollPane.setViewportView(subnetList);
 
+        subnetList.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    openNewHostPanel(subnetList, networkCalculator);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
 
 
         // -------------------------------------------------------------------------------------------------------------
@@ -79,13 +115,7 @@ public class SubnetPanel extends JPanel {
         JButton openSubnetPanelButton = new JButton();
         openSubnetPanelButton.setText("Open");
         openSubnetPanelButton.addActionListener(e -> {
-            String subnet = subnetList.getSelectedValue();
-            if (subnet != null && networkCalculator.getTabIndexFromTitle(tabbedPane, subnet) == 0) {
-                HostPanel hostPanel = new HostPanel(subnet);
-                tabbedPane.add(subnet, hostPanel);
-                tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, subnet));
-                tabbedPane.add("X", new JPanel());
-            }
+            openNewHostPanel(subnetList, networkCalculator);
         });
 
         // Delete Selected Network Button
@@ -116,7 +146,7 @@ public class SubnetPanel extends JPanel {
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
             model.addElement("Test");
-            System.out.println("worked");
+            // TODO get User Input and Create new Subnet according to the data
         });
 
 
@@ -137,11 +167,30 @@ public class SubnetPanel extends JPanel {
 
     }
 
+    public void openNewHostPanel(JList subnetList, NetworkCalculator networkCalculator) {
+
+        String subnet = (String) subnetList.getSelectedValue();
+        if (subnet != null && networkCalculator.getTabIndexFromTitle(tabbedPane, subnet) == 0) {
+            HostPanel hostPanel = new HostPanel(networkTitle, subnet, data);
+            hostPanels.add(hostPanel);
+            tabbedPane.add(subnet, hostPanel);
+            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, subnet));
+            tabbedPane.add("X", new JPanel());
+        }
+
+
+
+    }
+
     public String getNetworkTitle() {
         return networkTitle;
     }
 
     public DefaultListModel<String> getModel() {
         return model;
+    }
+
+    public static ArrayList<HostPanel> getHostPanels() {
+        return hostPanels;
     }
 }

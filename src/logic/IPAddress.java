@@ -1,13 +1,18 @@
+package logic;
 
 public abstract class IPAddress {
     private String[] ipAddressBlocks;
     private Type type;
 
-    public void convertIPAddressTo(Type type) {
+    public IPAddress convertIPAddressTo(Type type) {
         IPAddress newIpAddress = Converter.convert(this, type);
-        this.setIpAddressBlocks(newIpAddress.getIpAddressBlocks());
-        this.setType(newIpAddress.getType());
+        newIpAddress.setIpAddressBlocks(newIpAddress.getIpAddressBlocks());
+        newIpAddress.setType(newIpAddress.getType());
+
+        return newIpAddress;
     }
+
+
 
     public String[] getIpAddressBlocks() {
         return ipAddressBlocks;
@@ -20,6 +25,7 @@ public abstract class IPAddress {
     public Type getType() {
         return type;
     }
+
 
     public void setType(Type type) {
         this.type = type;

@@ -1,3 +1,7 @@
+import logic.Converter;
+import logic.IPAddress;
+import logic.IPv4.IPv4Address;
+import logic.Type;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -31,6 +35,15 @@ public class ConverterTest {
         assertEquals("13DB", Converter.convertDecimalToHex(5083,new StringBuilder()));
         assertEquals("0082", Converter.convertDecimalToHex(130,new StringBuilder()));
 
+    }
+
+    @Test
+    public void convertIPv4ToString(){
+        new Converter();
+        String[] firstIp = {"128","178","30","2"};
+        String[] secondIp = {"128","148","32","4"};
+        assertEquals("128.178.30.2", Converter.convertIPv4ToString(firstIp));
+        assertEquals("128.148.32.4", Converter.convertIPv4ToString(secondIp));
     }
 
     @Test

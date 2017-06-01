@@ -1,3 +1,7 @@
+package logic;
+
+import logic.IPv4.IPv4Address;
+
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
@@ -31,6 +35,10 @@ public class Converter {
     public static IPAddress convert(IPAddress ipAddress, Type type) {
         int ipAddressLength = ipAddress.getIpAddressBlocks().length;
         String[] newIPAddress = new String[ipAddressLength];
+
+        if(ipAddress.getType().equals(type)){
+            return ipAddress;
+        }
 
         switch (type) {
             case BINARY:
@@ -133,5 +141,18 @@ public class Converter {
         }
 
         return hexBuilder.toString();
+    }
+
+    public static String convertIPv4ToString(String[] ipAddressBlocks){
+        String ipAddress = "";
+        for(int i = 0; i < ipAddressBlocks.length; i++){
+            if(i == 0){
+                ipAddress += ipAddressBlocks[i];
+            }else {
+                ipAddress += "." + ipAddressBlocks[i];
+            }
+        }
+
+        return ipAddress;
     }
 }

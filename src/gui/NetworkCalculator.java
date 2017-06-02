@@ -141,4 +141,6 @@ public class NetworkCalculator extends JFrame {
         super.processWindowEvent(e);
     }
 
+
+
 }

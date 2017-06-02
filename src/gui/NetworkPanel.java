@@ -1,5 +1,6 @@
 package gui;
 
+import logic.IPv4.NetworkCheck;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -8,24 +9,40 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class NetworkPanel extends JPanel {
 
     private JTabbedPane tabbedPane;
     private static DefaultListModel<String> model = new DefaultListModel<>();
-
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
 
 
+
     public NetworkPanel(NetworkCalculator networkCalculator, JSONArray data) {
+        NetworkCheck check = new NetworkCheck(data);
+        //DELETE START
+        String[] ipDB = new String[data.size()];
+        //DELETE END
         this.data = data;
 
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
+            //DELETE START
+            ipDB[i] = networkObject.get("id").toString();
+            //DELETE END
             model.addElement(networkObject.get("id").toString());
         }
+
+        //DELETE START
+        for (int i = 0;i < data.size();i++){
+            System.out.println(ipDB[i]);
+        }
+
+        //System.out.println(Arrays.toString(ipDB));
+        //DELETE END
 
         // set the Network-Panel Layout to BorderLayout
         this.setLayout(new BorderLayout());

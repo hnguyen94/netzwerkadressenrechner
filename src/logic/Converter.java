@@ -31,7 +31,6 @@ public class Converter {
         return createdHexMap;
     }
 
-
     public static IPAddress convert(IPAddress ipAddress, Type type) {
         int ipAddressLength = ipAddress.getIpAddressBlocks().length;
         String[] newIPAddress = new String[ipAddressLength];
@@ -79,7 +78,6 @@ public class Converter {
         return newIpv4Address;
     }
 
-
     public static String convertToDecimal(String value, Type type) {
         StringBuilder decimalBuilder = new StringBuilder(value);
         String reverseValue = decimalBuilder.reverse().toString();
@@ -92,7 +90,6 @@ public class Converter {
 
         return null;
     }
-
 
     public static String convertDecimalToBinary(int value, StringBuilder binaryBuilder) {
         int restValue = value / 2;
@@ -154,5 +151,33 @@ public class Converter {
         }
 
         return ipAddress;
+    }
+
+    public static long IPtoInt(String completeIP){
+        long iPBlock1, iPBlock2, iPBlock3, iPBlock4, iPasLong;
+
+        String ipSplit[] = completeIP.split("/");
+
+        String ip = ipSplit[0];
+
+        String[] ipParts = ip.split("\\.");
+        iPBlock1 = Long.parseLong(ipParts[0]);
+        iPBlock2 = Long.parseLong(ipParts[1]);
+        iPBlock3 = Long.parseLong(ipParts[2]);
+        iPBlock4 = Long.parseLong(ipParts[3]);
+
+        iPasLong = (iPBlock1*16777216L)+(iPBlock2*65536L)+(iPBlock3*256L)+(iPBlock4);
+
+        return iPasLong;
+    }
+
+    public static int calculateAmountReservedIPs(int prefix){
+        int reversePrefix = 32-prefix;
+        int reservedIPs = 1;
+
+        for (int i = 1; i <= reversePrefix; i++){
+            reservedIPs *= 2;
+        }
+        return reservedIPs;
     }
 }

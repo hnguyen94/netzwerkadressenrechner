@@ -1,12 +1,16 @@
 package logic;
 
+import com.sun.deploy.util.ArrayUtil;
 import logic.IPv4.IPv4Address;
 import logic.IPv4.IPv4Net;
 import logic.IPv4.IPv4Network;
 import logic.IPv4.IPv4Subnet;
+import static java.lang.Math.toIntExact;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Converter {
 
@@ -198,6 +202,40 @@ public class Converter {
         return iPasLong;
     }
 
+    public static String[] getAllIPsInNetwork(String completeIP) {
+        String[] allIPs = new String[toIntExact(IPtoInt(getBroadcastFromNetwork(completeIP) + "/20")  - IPtoInt(completeIP)) + 1];
+
+        int counter = 0;
+        for (long l = IPtoInt(completeIP); l <= IPtoInt(getBroadcastFromNetwork(completeIP) + "/20"); l++) {
+            allIPs[counter] =  intToIP(l);
+            counter++;
+        }
+
+        return allIPs;
+    }
+
+    public static String getBroadcastFromNetwork(String completeIP) {
+        long IPasLong = IPtoInt(completeIP);
+        int prefix = Integer.valueOf(completeIP.split("/")[1]);
+
+        StringBuilder wildcardBuilder = new StringBuilder();
+        for (int i = 0; i < 32 - prefix; i++) {
+            wildcardBuilder.append("1");
+        }
+
+        String wildcardString = wildcardBuilder.toString();
+        long wildcardAsLong = Long.parseLong(wildcardString, 2);
+
+        long broadcastAsLong = IPasLong + wildcardAsLong;
+
+
+        return intToIP(broadcastAsLong);
+    }
+
+    public static String intToIP(long IPAsInt) {
+        return ((IPAsInt >> 24) & 0xFF) + "." + ((IPAsInt >> 16) & 0xFF) + "." + ((IPAsInt >> 8) & 0xFF) + "." + (IPAsInt  & 0xFF);
+    }
+
     public static int calculateAmountReservedIPs(int prefix){
         int reversePrefix = 32-prefix;
         int reservedIPs = 1;
@@ -207,5 +245,34 @@ public class Converter {
         }
         return reservedIPs;
     }
+
+    public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
+        String[] allNewIPs = getAllIPsInNetwork(newNetwork);
+
+        for (int i = 0; i <= oldNetworks.length; i++) {
+            String[] allOldIPs = getAllIPsInNetwork(oldNetworks[i]);
+
+            for (int j = 0; j < allOldIPs.length; j++) {
+                if (allOldIPs[j].equals(allNewIPs[0]) || allOldIPs[j].equals(allNewIPs[allNewIPs.length])) {
+                    return false;
+                }
+            }
+
+            /*
+            if (Arrays.asList(allOldIPs).contains(allNewIPs[0]) || Arrays.asList(allOldIPs).contains(allNewIPs[allNewIPs.length]) ) {
+                return false;
+            }
+            */
+
+
+
+        }
+
+        return true;
+
+
+    }
+
+
 }
 

@@ -13,17 +13,15 @@ public class SubnetPanel extends JPanel {
 
     private JTabbedPane tabbedPane;
     private String networkTitle;
-
     private DefaultListModel<String> model = new DefaultListModel<>();
-
     private static ArrayList<HostPanel> hostPanels = new ArrayList<>();
     private JSONArray data;
-
 
 
     public SubnetPanel(String network, NetworkCalculator networkCalculator, JSONArray data) {
         this.data = data;
 
+        // Get Data an write to listModel
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
 
@@ -36,9 +34,7 @@ public class SubnetPanel extends JPanel {
             }
         }
 
-
-
-
+        // Set networkTitle
         networkTitle = network;
 
         // set the Subnet-Panel Layout to BorderLayout
@@ -131,10 +127,6 @@ public class SubnetPanel extends JPanel {
 
         JTextField amountOfHostsTextField = new JTextField();
         amountOfHostsTextField.setPreferredSize(new Dimension(40, 20));
-        JTextField amountOfSubnetsTextField = new JTextField();
-        amountOfSubnetsTextField.setPreferredSize(new Dimension(40, 20));
-
-
 
 
 
@@ -159,9 +151,10 @@ public class SubnetPanel extends JPanel {
         openDeleteButtonPanel.add(openSubnetPanelButton);
         openDeleteButtonPanel.add(deleteSubnetPanelButton);
         interactionPanel.add(openDeleteButtonPanel);
-        numberFieldsPanel.add(amountOfHostsTextField);
-        numberFieldsPanel.add(amountOfSubnetsTextField);
         numberFieldsPanel.add(createNewSubnetButton);
+        numberFieldsPanel.add(new JLabel("a new Subnet with"));
+        numberFieldsPanel.add(amountOfHostsTextField);
+        numberFieldsPanel.add(new JLabel("hosts"));
         interactionPanel.add(numberFieldsPanel);
         add(interactionPanel, BorderLayout.PAGE_END);
 
@@ -177,9 +170,6 @@ public class SubnetPanel extends JPanel {
             tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, subnet));
             tabbedPane.add("X", new JPanel());
         }
-
-
-
     }
 
     public String getNetworkTitle() {

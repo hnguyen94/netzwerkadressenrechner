@@ -2,8 +2,6 @@ package gui;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.Test;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -42,10 +40,6 @@ public class HostPanel extends JPanel {
                 }
             }
         }
-
-
-
-
 
         this.setLayout(new BorderLayout());
 
@@ -95,7 +89,6 @@ public class HostPanel extends JPanel {
             }
         });
 
-
         if (hostModel.size() == 0) {
             for (int i = 0; i < 10; i++) {
                 String testData = String.valueOf(i);
@@ -107,13 +100,10 @@ public class HostPanel extends JPanel {
             }
         }
 
-
         listContent.add(hostScrollPane);
         listContent.add(notesScrollPane);
 
         this.add(listContent, BorderLayout.CENTER);
-
-
     }
 
     public String getSubnetTitle() {

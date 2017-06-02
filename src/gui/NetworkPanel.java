@@ -14,7 +14,6 @@ public class NetworkPanel extends JPanel {
 
     private JTabbedPane tabbedPane;
     private static DefaultListModel<String> model = new DefaultListModel<>();
-
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
 
@@ -22,6 +21,7 @@ public class NetworkPanel extends JPanel {
     public NetworkPanel(NetworkCalculator networkCalculator, JSONArray data) {
         this.data = data;
 
+        // Get Data an write to listModel
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
             model.addElement(networkObject.get("id").toString());
@@ -63,7 +63,6 @@ public class NetworkPanel extends JPanel {
         networkList.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 if (e.getClickCount() == 2) {
                     openNewSubnet(networkList, networkCalculator);
                 }
@@ -98,7 +97,6 @@ public class NetworkPanel extends JPanel {
         // Open Selected Network Button
         JButton openNetworkPanelButton = new JButton();
         openNetworkPanelButton.setText("Open");
-
         openNetworkPanelButton.addActionListener(e -> openNewSubnet(networkList, networkCalculator));
 
         // Delete Selected Network Button

@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

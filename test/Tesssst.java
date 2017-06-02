@@ -1,18 +1,16 @@
 import org.junit.Test;
+
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class Tesssst {
     @Test
     public void teeesssstt(){
-        String[] test = new String[3];
+        String network = "192.168.20.0/24";
+        String[] ipAndSuffix = network.split("\\/");
 
-        String t = "hallo";
-
-        test[0] = t;
-        System.out.println(test[0]);
-        t = "aaaa";
-        System.out.println(test[0]);
-
+        String[] ip = ipAndSuffix[0].split("\\.");
 
     }
 }

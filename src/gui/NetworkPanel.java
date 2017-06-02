@@ -3,6 +3,7 @@ package gui;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,9 @@ public class NetworkPanel extends JPanel {
 
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
+
+    private ImageIcon icon = new ImageIcon("resources/network_calculator.png");
+    private JOptionPane optionPane = new JOptionPane();
 
 
     public NetworkPanel(NetworkCalculator networkCalculator, JSONArray data) {
@@ -173,12 +177,14 @@ public class NetworkPanel extends JPanel {
                 if (!model.contains(newNetwork)) {
                     model.addElement(newNetwork);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
+                    optionPane.showMessageDialog(null, "Netzwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                    optionPane.setIcon(icon);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
+                optionPane.showMessageDialog(null, "Ungültiges Netzwerk",
                         "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                optionPane.setIcon(icon);
             }
         });
 

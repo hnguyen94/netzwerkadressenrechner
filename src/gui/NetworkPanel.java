@@ -1,7 +1,5 @@
-package view;
+package gui;
 
-import logic.Converter;
-import logic.IPv4.IPv4Network;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -15,7 +13,10 @@ import java.util.ArrayList;
 public class NetworkPanel extends JPanel {
 
     private JTabbedPane tabbedPane;
-    private static DefaultListModel<IPv4Network> model = new DefaultListModel<>();
+    private static DefaultListModel<String> model = new DefaultListModel<>();
+
+
+
 
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
@@ -27,7 +28,7 @@ public class NetworkPanel extends JPanel {
         // Get Data an write to listModel
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
-            model.addElement(Converter.convertStringToIpv4Network(networkObject.get("id").toString()));
+            model.addElement(networkObject.get("id").toString());
         }
 
         // set the Network-Panel Layout to BorderLayout
@@ -61,7 +62,7 @@ public class NetworkPanel extends JPanel {
 
         // JList for all Networks
         JScrollPane scrollPane = new JScrollPane();
-        JList<IPv4Network> networkList =  new JList<>(model);
+        JList<String> networkList =  new JList<>(model);
         scrollPane.setViewportView(networkList);
         networkList.addMouseListener(new MouseListener() {
             @Override
@@ -106,15 +107,13 @@ public class NetworkPanel extends JPanel {
         JButton deleteNetworkPanelButton = new JButton();
         deleteNetworkPanelButton.setText("Delete");
         deleteNetworkPanelButton.addActionListener(e -> {
-            IPv4Network currentSelectedTitle = networkList.getSelectedValue();
-            if(currentSelectedTitle != null){
-                int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle.toString());
-                if (selectedTabIndex != 0) {
-                    tabbedPane.remove(selectedTabIndex);
-                    tabbedPane.remove(selectedTabIndex);
-                }
-                model.removeElement(currentSelectedTitle);
+            String currentSelectedTitle = networkList.getSelectedValue();
+            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle);
+            if (selectedTabIndex != 0) {
+                tabbedPane.remove(selectedTabIndex);
+                tabbedPane.remove(selectedTabIndex);
             }
+            model.removeElement(currentSelectedTitle);
         });
 
 
@@ -154,6 +153,7 @@ public class NetworkPanel extends JPanel {
 
         createNewNetworkButton.setText("Create");
         createNewNetworkButton.addActionListener(e -> {
+
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < textFields.length; i++) {
                 String currentBlock = textFields[i].getText();
@@ -171,21 +171,19 @@ public class NetworkPanel extends JPanel {
 
             String newNetwork = stringBuilder.toString();
 
-            IPv4Network iPv4Network =  Converter.convertStringToIpv4Network(newNetwork);
-
             if (NetworkAddressValidator.validate(newNetwork)) {
-                if (!model.contains(iPv4Network)) {
-                    model.addElement(iPv4Network);
+                if (!model.contains(newNetwork)) {
+                    // TODO if netzwerke überlagern sich nicht
+                    model.addElement(newNetwork);
+                    // TODO else title Netzwerke überlagern sich
                 } else {
-                    JOptionPane.showMessageDialog(null, "Netzwerk bereits vorhanden",
+                    JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
                         "Eingabefehler", JOptionPane.WARNING_MESSAGE);
             }
-
-
         });
 
 
@@ -204,7 +202,7 @@ public class NetworkPanel extends JPanel {
 
     }
 
-    public static DefaultListModel<IPv4Network> getModel() {
+    public static DefaultListModel<String> getModel() {
         return model;
     }
 
@@ -213,12 +211,12 @@ public class NetworkPanel extends JPanel {
     }
 
     private void openNewSubnet(JList networkList, NetworkCalculator networkCalculator){
-        IPv4Network network = (IPv4Network) networkList.getSelectedValue();
-        if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network.toString()) == 0) {
+        String network = (String) networkList.getSelectedValue();
+        if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
             SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator, data);
             subnetPanels.add(subnetPanel);
-            tabbedPane.add(network.toString(), subnetPanel);
-            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network.toString()));
+            tabbedPane.add(network, subnetPanel);
+            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
             tabbedPane.add("X", new JPanel());
         }
     }

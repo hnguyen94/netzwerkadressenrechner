@@ -1,4 +1,4 @@
-package view;
+package gui;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;

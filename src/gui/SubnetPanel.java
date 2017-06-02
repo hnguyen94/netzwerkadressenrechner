@@ -1,6 +1,5 @@
-package view;
+package gui;
 
-import logic.IPv4.IPv4Network;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -19,12 +18,14 @@ public class SubnetPanel extends JPanel {
     private JSONArray data;
 
 
-    public SubnetPanel(IPv4Network network, NetworkCalculator networkCalculator, JSONArray data) {
+    public SubnetPanel(String network, NetworkCalculator networkCalculator, JSONArray data) {
+        this.data = data;
+
         // Get Data an write to listModel
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
 
-            if (networkObject.get("id").toString().equals(network.toString())) {
+            if (networkObject.get("id").toString().equals(network)) {
                 JSONArray subnets = (JSONArray) networkObject.get("subnets");
                 for (int j = 0; j < subnets.size(); j++) {
                     JSONObject subnetObject = (JSONObject) subnets.get(j);
@@ -33,7 +34,8 @@ public class SubnetPanel extends JPanel {
             }
         }
 
-        networkTitle = network.toString();
+        // Set networkTitle
+        networkTitle = network;
 
         // set the Subnet-Panel Layout to BorderLayout
         this.setLayout(new BorderLayout());

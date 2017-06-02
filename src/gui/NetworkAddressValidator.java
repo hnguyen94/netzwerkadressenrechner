@@ -1,4 +1,4 @@
-package view;
+package gui;
 
 public class NetworkAddressValidator {
 

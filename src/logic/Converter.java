@@ -161,10 +161,10 @@ public class Converter {
 
     public static IPv4Subnet convertStringToIpv4Subnet(String network){
 
-        String[] ipAndSuffix = network.split("\\/");
+        String[] ipAndSuffix = network.split("/");
 
         String[] ipAddress = ipAndSuffix[0].split("\\.");
-
+        System.out.println(network);
         int suffix = Integer.parseInt(ipAndSuffix[1]);
 
         return new IPv4Subnet(suffix,new IPv4Address(ipAddress,Type.DECIMAL));

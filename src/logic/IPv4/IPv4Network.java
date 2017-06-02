@@ -63,6 +63,23 @@ public class IPv4Network extends IPv4Net{
         return suffix;
     }
 
+    public IPv4Address getNextNetworkIPAddress(){
+        if(ipv4Subnets.isEmpty()){
+            return getNetworkIpAddress();
+        }else{
+            IPv4Subnet iPv4Subnet = ipv4Subnets.get(ipv4Subnets.size() - 1);
+            String[] ipAddressBlocks = iPv4Subnet.getBroadcastAddress().getIpAddressBlocks();
+            int blockNumber = iPv4Subnet.getBlockNumber(ipAddressBlocks, 3);
+            if(blockNumber < 3){
+                for (int j = 3; blockNumber < j; j--){
+                    ipAddressBlocks[j] = "0";
+                }
+            }
+            ipAddressBlocks[blockNumber] = String.valueOf(Integer.parseInt(ipAddressBlocks[blockNumber]) + 1);
+            return new IPv4Address(ipAddressBlocks.clone(),Type.DECIMAL);
+        }
+    }
+
 
     public ArrayList<IPv4Subnet> getIpv4Subnets() {
         return ipv4Subnets;

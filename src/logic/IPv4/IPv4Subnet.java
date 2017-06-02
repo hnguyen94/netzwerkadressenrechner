@@ -60,6 +60,8 @@ public class IPv4Subnet extends IPv4Net{
         return getBlockNumber(networkIPBlock, OneLessBlockNumber);
     }
 
+
+
     public IPv4HostAddress[] getHostIpAddresses() {
         return hostIpAddresses;
     }

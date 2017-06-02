@@ -1,5 +1,6 @@
 package gui;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.io.FileWriter;
@@ -141,24 +142,30 @@ public class NetworkCalculator extends JFrame {
         super.processWindowEvent(e);
     }
 
-    private static String[] getIPsOfNetwork(String network) {
-        String[] IPandPrefix = network.split("/");
-        String[] networkID = IPandPrefix[0].split("\\.");
-        int amountOfOnes = Integer.valueOf(IPandPrefix[1]);
-        int amountOfZeros = 32 - amountOfOnes;
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < amountOfOnes; i++) {
-            stringBuilder.append("1");
+
+    public static String getBroadcastFromNetwork(String network) {
+        String[] networkIDAndPrefix = network.split("/");
+        String networkID = networkIDAndPrefix[0];
+        String prefix = networkIDAndPrefix[1];
+
+        StringBuilder subnetMaskBuilder = new StringBuilder();
+
+        for (int i= 0; i < Integer.parseInt(prefix); i++) {
+            subnetMaskBuilder.append("1");
         }
-        for (int i = 0; i < amountOfZeros; i++) {
-            stringBuilder.append("0");
+        for (int i= 0; i < 32 - Integer.parseInt(prefix); i++) {
+            subnetMaskBuilder.append("0");
         }
-        String subnetAsBinary = stringBuilder.toString();
 
-        return IPandPrefix;
+        String subnetMaskBinaryString = subnetMaskBuilder.toString();
 
 
+
+
+
+
+        return subnetMaskBinaryString;
 
 
 

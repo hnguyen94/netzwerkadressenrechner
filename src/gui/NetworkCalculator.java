@@ -156,6 +156,8 @@ public class NetworkCalculator extends JFrame {
         }
         String subnetAsBinary = stringBuilder.toString();
 
+        return IPandPrefix;
+
 
 
 

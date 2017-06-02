@@ -108,12 +108,14 @@ public class NetworkPanel extends JPanel {
         deleteNetworkPanelButton.setText("Delete");
         deleteNetworkPanelButton.addActionListener(e -> {
             IPv4Network currentSelectedTitle = networkList.getSelectedValue();
-            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle.toString());
-            if (selectedTabIndex != 0) {
-                tabbedPane.remove(selectedTabIndex);
-                tabbedPane.remove(selectedTabIndex);
+            if(currentSelectedTitle != null){
+                int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle.toString());
+                if (selectedTabIndex != 0) {
+                    tabbedPane.remove(selectedTabIndex);
+                    tabbedPane.remove(selectedTabIndex);
+                }
+                model.removeElement(currentSelectedTitle);
             }
-            model.removeElement(currentSelectedTitle);
         });
 
 
@@ -175,7 +177,6 @@ public class NetworkPanel extends JPanel {
             if (NetworkAddressValidator.validate(newNetwork)) {
                 if (!model.contains(iPv4Network)) {
                     model.addElement(iPv4Network);
-
                 } else {
                     JOptionPane.showMessageDialog(null, "Netzwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);

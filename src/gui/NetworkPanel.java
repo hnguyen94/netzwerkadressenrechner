@@ -169,7 +169,9 @@ public class NetworkPanel extends JPanel {
 
             if (NetworkAddressValidator.validate(newNetwork)) {
                 if (!model.contains(newNetwork)) {
+                    // TODO if netzwerke überlagern sich nicht
                     model.addElement(newNetwork);
+                    // TODO else title Netzwerke überlagern sich
                 } else {
                     JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);

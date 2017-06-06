@@ -138,28 +138,50 @@ public class SubnetPanel extends JPanel {
         JButton createNewSubnetButton = new JButton();
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
-            model.addElement("Test");
             int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
             int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
 
-            String[] allIPsInNetwork = Converter.getAllIPsInNetwork(network);
 
-            int totalAmountOfIPsInNewNetwork = Converter.getAmountOfIPsFromPrefix(prefixAccordingToTheHosts);
-            String[] allPossibleNetworkIDS = new String[allIPsInNetwork.length / totalAmountOfIPsInNewNetwork];
+            if (model.getSize() != 0) {
+                boolean checker = false;
 
-            int counter = 0;
-            for (int i = 0; i < allIPsInNetwork.length; i++) {
-                if (i % totalAmountOfIPsInNewNetwork == 0){
-                    allPossibleNetworkIDS[counter] = allIPsInNetwork[i];
-                    System.out.println(allPossibleNetworkIDS[counter]);
-                    counter += 1;
+                String[] allCurrentSubnets = new String[model.getSize()];
+                for (int i = 0; i < model.getSize(); i++) {
+                    allCurrentSubnets[i] = model.getElementAt(i);
                 }
+
+                String[] allPossibleNewNetworks = new String[allCurrentSubnets.length];
+                for (int i = 0; i < allCurrentSubnets.length; i++) {
+                    allPossibleNewNetworks[i] = Converter.getNewFreeIPAfterNetwork(allCurrentSubnets[i]);
+                }
+
+                for (int i = 0; i < allPossibleNewNetworks.length; i++) {
+                    String possibleNewNetwork = allPossibleNewNetworks[i] + "/" + prefixAccordingToTheHosts;
+                    if (!checker && Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
+                        if (Converter.IPtoInt(Converter.getBroadcastFromNetwork(network)) >= Converter.IPtoInt(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
+
+
+                            model.addElement(possibleNewNetwork);
+                            checker = true;
+                        }
+                    }
+
+                }
+
+                if (!checker) {
+                    JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
+                            "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                }
+
+
+
+
+            } else {
+                String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
+                model.addElement(newNetworkBuilder);
             }
 
-            for (int i = 0; i < allPossibleNetworkIDS.length; i++) {
 
-
-            }
 
 
 

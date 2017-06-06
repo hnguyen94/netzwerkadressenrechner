@@ -181,8 +181,6 @@ public class NetworkPanel extends JPanel {
             String newNetwork = stringBuilder.toString();
             int prefix = Integer.parseInt(newNetwork.split("/")[1]);
 
-            System.out.println(prefix);
-
             if (prefix >= 16) {
                 if (NetworkAddressValidator.validate(newNetwork)) {
                     if (!model.contains(newNetwork)) {

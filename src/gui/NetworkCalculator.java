@@ -96,18 +96,9 @@ public class NetworkCalculator extends JFrame {
                                         host.put("host", hostString);
                                         host.put("note", noteString);
                                         hosts.add(host);
-
-
                                     }
-
-
                                 }
-
-
                             }
-
-
-
 
                             JSONObject subnet = new JSONObject();
                             subnet.put("subnet", subnetString);
@@ -140,35 +131,6 @@ public class NetworkCalculator extends JFrame {
 
         }
         super.processWindowEvent(e);
-    }
-
-
-
-    public static String getBroadcastFromNetwork(String network) {
-        String[] networkIDAndPrefix = network.split("/");
-        String networkID = networkIDAndPrefix[0];
-        String prefix = networkIDAndPrefix[1];
-
-        StringBuilder subnetMaskBuilder = new StringBuilder();
-
-        for (int i= 0; i < Integer.parseInt(prefix); i++) {
-            subnetMaskBuilder.append("1");
-        }
-        for (int i= 0; i < 32 - Integer.parseInt(prefix); i++) {
-            subnetMaskBuilder.append("0");
-        }
-
-        String subnetMaskBinaryString = subnetMaskBuilder.toString();
-
-
-
-
-
-
-        return subnetMaskBinaryString;
-
-
-
     }
 
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import logic.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import javax.swing.*;
@@ -94,12 +95,18 @@ public class HostPanel extends JPanel {
         });
 
         if (hostModel.size() == 0) {
-            for (int i = 0; i < 100; i++) {
-                String testData = String.valueOf(i);
-                hostModel.addElement(testData);
+            String[] allIPs = Converter.getAllIPsInNetwork(subnet);
+            for (int i = 0; i < allIPs.length; i++) {
+                hostModel.addElement(allIPs[i]);
                 notesModel.setSize(hostModel.getSize());
                 if (notesModel.getElementAt(i) == null) {
-                    notesModel.setElementAt("frei", i);
+                    if (i == 0) {
+                        notesModel.setElementAt("Netzwerk ID", i);
+                    } else if (i == allIPs.length - 1) {
+                        notesModel.setElementAt("Broadcast", i);
+                    } else {
+                        notesModel.setElementAt("frei", i);
+                    }
                 }
             }
         }

@@ -246,13 +246,6 @@ public class Converter {
 
     public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
 
-        long newAddress = IPtoInt(newNetwork);
-        long oldNetwork = IPtoInt(oldNetworks[0]);
-
-
-
-
-
         String[] allNewIPs = getAllIPsInNetwork(newNetwork);
 
         for (int i = 0; i < oldNetworks.length; i++) {
@@ -281,6 +274,15 @@ public class Converter {
 
     public static String getSmallestNewSubnetInNetwork() {
         return "Test";
+    }
+
+    public static int getPrefixFromCompleteNetwork(String network) {
+        return Integer.valueOf(network.split("/")[1]);
+    }
+
+    public static String getNewFreeIPAfterNetwork(String network) {
+        long networkAsLong = IPtoInt(network);
+        return intToIP(networkAsLong + getAmountOfIPsFromPrefix(getPrefixFromCompleteNetwork(network)));
     }
 
 }

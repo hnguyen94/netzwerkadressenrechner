@@ -26,6 +26,11 @@ public class NetworkCalculator extends JFrame {
                 tabbedPane.setSelectedIndex(0);
                 tabbedPane.removeTabAt(currentIndex);
                 tabbedPane.removeTabAt(currentIndex - 1);
+                if (tabbedPane.getTitleAt(currentIndex - 2).equals("X")) {
+                    tabbedPane.setSelectedIndex(currentIndex - 3);
+                } else {
+                    tabbedPane.setSelectedIndex(currentIndex - 2);
+                }
             }
         });
 

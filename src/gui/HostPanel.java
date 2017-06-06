@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class HostPanel extends JPanel {
 
@@ -42,6 +43,18 @@ public class HostPanel extends JPanel {
             }
         }
 
+        ArrayList<HostPanel> allHostPanels = SubnetPanel.getHostPanels();
+        for (int i = 0; i < allHostPanels.size(); i++) {
+            if (allHostPanels.get(i).getSubnetTitle().equals(subnet)) {
+                hostModel = allHostPanels.get(i).getHostModel();
+                notesModel = allHostPanels.get(i).getNotesModel();
+                SubnetPanel.removeEntryFromArrayList(i);
+            }
+
+        }
+
+
+
         this.setLayout(new BorderLayout());
 
         JPanel listContent = new JPanel();
@@ -63,11 +76,12 @@ public class HostPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    // TODO Function to open new User Input Field
-                    JFrame frame = new JFrame();
-                    String note = JOptionPane.showInputDialog(frame, "Notiz:");
-                    if (note != null) {
-                        notesModel.setElementAt(note, notesList.getSelectedIndex());
+                    if (notesList.getSelectedIndex() != 0 && notesList.getSelectedIndex() != notesList.getModel().getSize() - 1) {
+                        JFrame frame = new JFrame();
+                        String note = JOptionPane.showInputDialog(frame, "Notiz:");
+                        if (note != null) {
+                            notesModel.setElementAt(note, notesList.getSelectedIndex());
+                        }
                     }
 
                 }

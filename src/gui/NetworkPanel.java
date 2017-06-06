@@ -243,4 +243,8 @@ public class NetworkPanel extends JPanel {
         }
     }
 
+    public static void removeEntryFromArrayList(int index) {
+        subnetPanels.remove(index);
+    }
+
 }

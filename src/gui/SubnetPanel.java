@@ -35,6 +35,19 @@ public class SubnetPanel extends JPanel {
             }
         }
 
+
+        ArrayList<SubnetPanel> allSubnetPanels = NetworkPanel.getSubnetPanels();
+        for (int i = 0; i < allSubnetPanels.size(); i++) {
+            if (allSubnetPanels.get(i).getNetworkTitle().equals(network)) {
+                model = allSubnetPanels.get(i).getModel();
+                NetworkPanel.removeEntryFromArrayList(i);
+            }
+        }
+
+
+
+
+
         // Set networkTitle
         networkTitle = network;
 
@@ -170,7 +183,7 @@ public class SubnetPanel extends JPanel {
 
                 if (!checker) {
                     JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
-                            "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                            "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 }
 
 
@@ -233,5 +246,9 @@ public class SubnetPanel extends JPanel {
 
     public static ArrayList<HostPanel> getHostPanels() {
         return hostPanels;
+    }
+
+    public static void removeEntryFromArrayList(int index) {
+        hostPanels.remove(index);
     }
 }

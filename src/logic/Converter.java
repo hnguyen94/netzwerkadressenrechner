@@ -1,16 +1,14 @@
 package logic;
 
-import com.sun.deploy.util.ArrayUtil;
 import logic.IPv4.IPv4Address;
-import logic.IPv4.IPv4Net;
 import logic.IPv4.IPv4Network;
 import logic.IPv4.IPv4Subnet;
-import static java.lang.Math.toIntExact;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
+import static java.lang.Math.toIntExact;
 
 public class Converter {
 
@@ -247,32 +245,43 @@ public class Converter {
     }
 
     public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
+
+        long newAddress = IPtoInt(newNetwork);
+        long oldNetwork = IPtoInt(oldNetworks[0]);
+
+
+
+
+
         String[] allNewIPs = getAllIPsInNetwork(newNetwork);
 
-        for (int i = 0; i <= oldNetworks.length; i++) {
+        for (int i = 0; i < oldNetworks.length; i++) {
             String[] allOldIPs = getAllIPsInNetwork(oldNetworks[i]);
 
-            for (int j = 0; j < allOldIPs.length; j++) {
-                if (allOldIPs[j].equals(allNewIPs[0]) || allOldIPs[j].equals(allNewIPs[allNewIPs.length])) {
+            for (int j = 0; j < allNewIPs.length; j++) {
+                if (Arrays.asList(allOldIPs).contains(allNewIPs[j])) {
                     return false;
                 }
             }
-
-            /*
-            if (Arrays.asList(allOldIPs).contains(allNewIPs[0]) || Arrays.asList(allOldIPs).contains(allNewIPs[allNewIPs.length]) ) {
-                return false;
-            }
-            */
-
-
-
         }
 
         return true;
+    }
 
+    public static int getPrefixFromAmountOfHosts(int amountOfHosts) {
+
+        return (int) (32 - Math.ceil(Math.log(amountOfHosts + 2) / Math.log(2)));
 
     }
 
+    public static int getAmountOfIPsFromPrefix (int prefix) {
+        return (int) Math.pow(2, 32 - prefix);
+
+    }
+
+    public static String getSmallestNewSubnetInNetwork() {
+        return "Test";
+    }
 
 }
 

@@ -1,5 +1,6 @@
 package gui;
 
+import logic.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -138,6 +139,34 @@ public class SubnetPanel extends JPanel {
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
             model.addElement("Test");
+            int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
+            int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
+
+            String[] allIPsInNetwork = Converter.getAllIPsInNetwork(network);
+
+            int totalAmountOfIPsInNewNetwork = Converter.getAmountOfIPsFromPrefix(prefixAccordingToTheHosts);
+            String[] allPossibleNetworkIDS = new String[allIPsInNetwork.length / totalAmountOfIPsInNewNetwork];
+
+            int counter = 0;
+            for (int i = 0; i < allIPsInNetwork.length; i++) {
+                if (i % totalAmountOfIPsInNewNetwork == 0){
+                    allPossibleNetworkIDS[counter] = allIPsInNetwork[i];
+                    System.out.println(allPossibleNetworkIDS[counter]);
+                    counter += 1;
+                }
+            }
+
+            for (int i = 0; i < allPossibleNetworkIDS.length; i++) {
+
+
+            }
+
+
+
+
+
+
+
             // TODO get User Input and Create new Subnet according to the data
         });
 

@@ -46,13 +46,17 @@ public class HostPanel extends JPanel {
         JPanel listContent = new JPanel();
         listContent.setLayout(new GridLayout(1, 2));
 
-        JScrollPane hostScrollPane = new JScrollPane();
         JList<String> hostList =  new JList<>(hostModel);
-        hostScrollPane.setViewportView(hostList);
-
-        JScrollPane notesScrollPane = new JScrollPane();
         JList<String> notesList =  new JList<>(notesModel);
-        notesScrollPane.setViewportView(notesList);
+
+        listContent.add(hostList);
+        listContent.add(notesList);
+
+        JScrollPane scrollPane = new JScrollPane(listContent);
+
+
+
+
 
         notesList.addMouseListener(new MouseListener() {
             @Override
@@ -90,7 +94,7 @@ public class HostPanel extends JPanel {
         });
 
         if (hostModel.size() == 0) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 String testData = String.valueOf(i);
                 hostModel.addElement(testData);
                 notesModel.setSize(hostModel.getSize());
@@ -100,10 +104,9 @@ public class HostPanel extends JPanel {
             }
         }
 
-        listContent.add(hostScrollPane);
-        listContent.add(notesScrollPane);
 
-        this.add(listContent, BorderLayout.CENTER);
+
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 
     public String getSubnetTitle() {

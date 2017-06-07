@@ -1,10 +1,13 @@
 package logic;
 
+import com.sun.deploy.util.ArrayUtil;
 import logic.IPv4.IPv4Address;
 import logic.IPv4.IPv4Network;
 import logic.IPv4.IPv4Subnet;
 
+import javax.swing.*;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
@@ -320,6 +323,24 @@ public class Converter {
     public static String getNewFreeIPAfterNetwork(String network) {
         long networkAsLong = ipToLong(network);
         return longToIP(networkAsLong + getAmountOfIPsFromPrefix(getPrefixFromCompleteNetwork(network)));
+    }
+
+    public static String[] sortNetworksInModel(DefaultListModel model) {
+        String[] networks = new String[model.size()];
+
+
+        for (int i = 0; i < model.size(); i++) {
+            networks[i] = model.get(i).toString();
+        }
+        Arrays.sort(networks, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Long.compare(ipToLong(o1), ipToLong(o2));
+            }
+        });
+
+        return networks;
+
     }
 
 }

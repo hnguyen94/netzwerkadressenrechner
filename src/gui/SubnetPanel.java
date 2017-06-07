@@ -174,6 +174,14 @@ public class SubnetPanel extends JPanel {
                         if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
 
                             model.addElement(possibleNewNetwork);
+                            // sort the elements from the model
+                            String[] sortedElements = Converter.sortNetworksInModel(model);
+                            model.removeAllElements();
+                            for (String sortedElement : sortedElements) {
+                                model.addElement(sortedElement);
+                            }
+
+
                             checker = true;
                         }
                     }

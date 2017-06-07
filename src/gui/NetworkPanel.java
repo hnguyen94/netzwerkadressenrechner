@@ -179,7 +179,6 @@ public class NetworkPanel extends JPanel {
             }
 
             String newNetwork = stringBuilder.toString();
-            System.out.println(newNetwork);
 
             if (NetworkAddressValidator.validate(newNetwork)) {
                 if (!model.contains(newNetwork)) {
@@ -189,6 +188,12 @@ public class NetworkPanel extends JPanel {
                     }
                     if (Converter.checkIfPossibleNewNetwork(allOldNetworks, newNetwork)) {
                         model.addElement(newNetwork);
+                        // sort the elements from the model
+                        String[] sortedElements = Converter.sortNetworksInModel(model);
+                        model.removeAllElements();
+                        for (String sortedElement : sortedElements) {
+                            model.addElement(sortedElement);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "Netzwerke überlagern sich",
                                 "Eingabefehler", JOptionPane.WARNING_MESSAGE);

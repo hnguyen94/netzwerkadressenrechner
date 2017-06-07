@@ -245,20 +245,38 @@ public class Converter {
     }
 
     public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
+        return Arrays.stream(oldNetworks).noneMatch(v -> isColliding(v, newNetwork));
+    }
 
-        String[] allNewIPs = getAllIPsInNetwork(newNetwork);
+    public static boolean isColliding(String networkA, String networkB) {
+        long networkAId = IPtoInt(networkA);
+        long networkAMask = IPtoInt(prefixToMask(getPrefixFromCompleteNetwork(networkA)));
+        long networkBId = IPtoInt(networkB);
+        long networkBMask = IPtoInt(prefixToMask(getPrefixFromCompleteNetwork(networkB)));
+        return isInSubnet(networkAId, networkAMask, networkBId)
+                || isInSubnet(networkBId, networkBMask, networkAId);
+    }
 
-        for (int i = 0; i < oldNetworks.length; i++) {
-            String[] allOldIPs = getAllIPsInNetwork(oldNetworks[i]);
+    /**
+     *
+     * @param networkId parent network ID
+     * @param networkMask parent network mask
+     * @param hostId host address
+     * @return If the host address ist inside network ID/network mask combination
+     */
+    static boolean isInSubnet(long networkId, long networkMask, long hostId) {
+        return (hostId & networkMask) == (networkId & networkMask);
+    }
 
-            for (int j = 0; j < allNewIPs.length; j++) {
-                if (Arrays.asList(allOldIPs).contains(allNewIPs[j])) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    /**
+     * creates an netmask from prefix
+     * @param prefix network prefix
+     * @return The netmask
+     */
+    public static String prefixToMask(int prefix) {
+        if(prefix < 0 || prefix > 32) throw new IllegalArgumentException("Illegal prefix '" + prefix + "'");
+        long mask = prefix == 0 ? 0 : -1 << (32 - prefix);
+        return intToIP(mask);
     }
 
     public static int getPrefixFromAmountOfHosts(int amountOfHosts) {

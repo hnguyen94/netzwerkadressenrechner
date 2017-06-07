@@ -1,11 +1,13 @@
 package gui;
 
+import logic.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class HostPanel extends JPanel {
 
@@ -41,28 +43,45 @@ public class HostPanel extends JPanel {
             }
         }
 
+        ArrayList<HostPanel> allHostPanels = SubnetPanel.getHostPanels();
+        for (int i = 0; i < allHostPanels.size(); i++) {
+            if (allHostPanels.get(i).getSubnetTitle().equals(subnet)) {
+                hostModel = allHostPanels.get(i).getHostModel();
+                notesModel = allHostPanels.get(i).getNotesModel();
+                SubnetPanel.removeEntryFromArrayList(i);
+            }
+
+        }
+
+
+
         this.setLayout(new BorderLayout());
 
         JPanel listContent = new JPanel();
         listContent.setLayout(new GridLayout(1, 2));
 
-        JScrollPane hostScrollPane = new JScrollPane();
         JList<String> hostList =  new JList<>(hostModel);
-        hostScrollPane.setViewportView(hostList);
-
-        JScrollPane notesScrollPane = new JScrollPane();
         JList<String> notesList =  new JList<>(notesModel);
-        notesScrollPane.setViewportView(notesList);
+
+        listContent.add(hostList);
+        listContent.add(notesList);
+
+        JScrollPane scrollPane = new JScrollPane(listContent);
+
+
+
+
 
         notesList.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    // TODO Function to open new User Input Field
-                    JFrame frame = new JFrame();
-                    String note = JOptionPane.showInputDialog(frame, "Notiz:");
-                    if (note != null) {
-                        notesModel.setElementAt(note, notesList.getSelectedIndex());
+                    if (notesList.getSelectedIndex() != 0 && notesList.getSelectedIndex() != notesList.getModel().getSize() - 1) {
+                        JFrame frame = new JFrame();
+                        String note = JOptionPane.showInputDialog(frame, "Notiz:");
+                        if (note != null) {
+                            notesModel.setElementAt(note, notesList.getSelectedIndex());
+                        }
                     }
 
                 }
@@ -90,20 +109,25 @@ public class HostPanel extends JPanel {
         });
 
         if (hostModel.size() == 0) {
-            for (int i = 0; i < 10; i++) {
-                String testData = String.valueOf(i);
-                hostModel.addElement(testData);
+            String[] allIPs = Converter.getAllIPsInNetwork(subnet);
+            for (int i = 0; i < allIPs.length; i++) {
+                hostModel.addElement(allIPs[i]);
                 notesModel.setSize(hostModel.getSize());
                 if (notesModel.getElementAt(i) == null) {
-                    notesModel.setElementAt("frei", i);
+                    if (i == 0) {
+                        notesModel.setElementAt("Netzwerk ID", i);
+                    } else if (i == allIPs.length - 1) {
+                        notesModel.setElementAt("Broadcast", i);
+                    } else {
+                        notesModel.setElementAt("frei", i);
+                    }
                 }
             }
         }
 
-        listContent.add(hostScrollPane);
-        listContent.add(notesScrollPane);
 
-        this.add(listContent, BorderLayout.CENTER);
+
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 
     public String getSubnetTitle() {

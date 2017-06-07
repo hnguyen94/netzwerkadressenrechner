@@ -1,5 +1,6 @@
 package gui;
 
+import logic.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -33,6 +34,19 @@ public class SubnetPanel extends JPanel {
                 }
             }
         }
+
+
+        ArrayList<SubnetPanel> allSubnetPanels = NetworkPanel.getSubnetPanels();
+        for (int i = 0; i < allSubnetPanels.size(); i++) {
+            if (allSubnetPanels.get(i).getNetworkTitle().equals(network)) {
+                model = allSubnetPanels.get(i).getModel();
+                NetworkPanel.removeEntryFromArrayList(i);
+            }
+        }
+
+
+
+
 
         // Set networkTitle
         networkTitle = network;
@@ -137,8 +151,45 @@ public class SubnetPanel extends JPanel {
         JButton createNewSubnetButton = new JButton();
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
-            model.addElement("Test");
-            // TODO get User Input and Create new Subnet according to the data
+            int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
+            int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
+
+
+            if (model.getSize() != 0) {
+                boolean checker = false;
+
+                String[] allCurrentSubnets = new String[model.getSize()];
+                for (int i = 0; i < model.getSize(); i++) {
+                    allCurrentSubnets[i] = model.getElementAt(i);
+                }
+
+                String[] allPossibleNewNetworks = new String[allCurrentSubnets.length];
+                for (int i = 0; i < allCurrentSubnets.length; i++) {
+                    allPossibleNewNetworks[i] = Converter.getNewFreeIPAfterNetwork(allCurrentSubnets[i]);
+                }
+
+                for (int i = 0; i < allPossibleNewNetworks.length; i++) {
+                    String possibleNewNetwork = allPossibleNewNetworks[i] + "/" + prefixAccordingToTheHosts;
+                    if (!checker && Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
+                        if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
+
+                            model.addElement(possibleNewNetwork);
+                            checker = true;
+                        }
+                    }
+
+                }
+
+                if (!checker) {
+                    JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
+                            "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
+                model.addElement(newNetworkBuilder);
+            }
+
         });
 
 
@@ -182,5 +233,9 @@ public class SubnetPanel extends JPanel {
 
     public static ArrayList<HostPanel> getHostPanels() {
         return hostPanels;
+    }
+
+    public static void removeEntryFromArrayList(int index) {
+        hostPanels.remove(index);
     }
 }

@@ -40,6 +40,11 @@ public class NetworkAddressValidatorTest {
     public void FalseWhenNumberIsOver255() {
         assertEquals(NetworkAddressValidator.validate("256.111.111.111/1"), false);
     }
+
+    @Test
+    public void Test() {
+        assertEquals(NetworkAddressValidator.validate("0.0.0.0/0"), true);
+    }
 }
 
 

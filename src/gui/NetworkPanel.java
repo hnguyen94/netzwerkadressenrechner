@@ -1,6 +1,8 @@
 package gui;
 
 
+import logic.Converter;
+import logic.IPv4.NetworkCheck;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -9,6 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class NetworkPanel extends JPanel {
@@ -16,19 +19,24 @@ public class NetworkPanel extends JPanel {
     private JTabbedPane tabbedPane;
     private static DefaultListModel<String> model = new DefaultListModel<>();
 
-
-
-
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
 
 
+
     public NetworkPanel(NetworkCalculator networkCalculator, JSONArray data) {
+        NetworkCheck check = new NetworkCheck(data);
+        //DELETE START
+        String[] ipDB = new String[data.size()];
+        //DELETE END
         this.data = data;
 
         // Get Data an write to listModel
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
+            //DELETE START
+            ipDB[i] = networkObject.get("id").toString();
+            //DELETE END
             model.addElement(networkObject.get("id").toString());
         }
 
@@ -171,12 +179,20 @@ public class NetworkPanel extends JPanel {
             }
 
             String newNetwork = stringBuilder.toString();
+            System.out.println(newNetwork);
 
             if (NetworkAddressValidator.validate(newNetwork)) {
                 if (!model.contains(newNetwork)) {
-                    // TODO if netzwerke überlagern sich nicht
-                    model.addElement(newNetwork);
-                    // TODO else title Netzwerke überlagern sich
+                    String[] allOldNetworks = new String[model.size()];
+                    for (int i = 0; i < model.size(); i++) {
+                        allOldNetworks[i] = model.getElementAt(i);
+                    }
+                    if (Converter.checkIfPossibleNewNetwork(allOldNetworks, newNetwork)) {
+                        model.addElement(newNetwork);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Netzwerke überlagern sich",
+                                "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);
@@ -185,6 +201,7 @@ public class NetworkPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
                         "Eingabefehler", JOptionPane.WARNING_MESSAGE);
             }
+
         });
 
 
@@ -220,6 +237,10 @@ public class NetworkPanel extends JPanel {
             tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
             tabbedPane.add("X", new JPanel());
         }
+    }
+
+    public static void removeEntryFromArrayList(int index) {
+        subnetPanels.remove(index);
     }
 
 }

@@ -179,33 +179,29 @@ public class NetworkPanel extends JPanel {
             }
 
             String newNetwork = stringBuilder.toString();
-            int prefix = Integer.parseInt(newNetwork.split("/")[1]);
+            System.out.println(newNetwork);
 
-            if (prefix >= 16) {
-                if (NetworkAddressValidator.validate(newNetwork)) {
-                    if (!model.contains(newNetwork)) {
-                        String[] allOldNetworks = new String[model.size()];
-                        for (int i = 0; i < model.size(); i++) {
-                            allOldNetworks[i] = model.getElementAt(i);
-                        }
-                        if (Converter.checkIfPossibleNewNetwork(allOldNetworks, newNetwork)) {
-                            model.addElement(newNetwork);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Netzwerke überlagern sich",
-                                    "Eingabefehler", JOptionPane.WARNING_MESSAGE);
-                        }
+            if (NetworkAddressValidator.validate(newNetwork)) {
+                if (!model.contains(newNetwork)) {
+                    String[] allOldNetworks = new String[model.size()];
+                    for (int i = 0; i < model.size(); i++) {
+                        allOldNetworks[i] = model.getElementAt(i);
+                    }
+                    if (Converter.checkIfPossibleNewNetwork(allOldNetworks, newNetwork)) {
+                        model.addElement(newNetwork);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
+                        JOptionPane.showMessageDialog(null, "Netzwerke überlagern sich",
                                 "Eingabefehler", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
+                    JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
                             "Eingabefehler", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Zu großes Netzwerk",
+                JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
                         "Eingabefehler", JOptionPane.WARNING_MESSAGE);
             }
+
         });
 
 

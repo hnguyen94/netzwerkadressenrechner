@@ -171,8 +171,7 @@ public class SubnetPanel extends JPanel {
                 for (int i = 0; i < allPossibleNewNetworks.length; i++) {
                     String possibleNewNetwork = allPossibleNewNetworks[i] + "/" + prefixAccordingToTheHosts;
                     if (!checker && Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
-                        if (Converter.IPtoInt(Converter.getBroadcastFromNetwork(network)) >= Converter.IPtoInt(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
-
+                        if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
 
                             model.addElement(possibleNewNetwork);
                             checker = true;
@@ -186,23 +185,11 @@ public class SubnetPanel extends JPanel {
                             "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 }
 
-
-
-
             } else {
                 String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
                 model.addElement(newNetworkBuilder);
             }
 
-
-
-
-
-
-
-
-
-            // TODO get User Input and Create new Subnet according to the data
         });
 
 

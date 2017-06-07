@@ -182,7 +182,7 @@ public class Converter {
     }
 
 
-    public static long IPtoInt(String completeIP){
+    public static long ipToLong(String completeIP){
         long iPBlock1, iPBlock2, iPBlock3, iPBlock4, iPasLong;
 
         String ipSplit[] = completeIP.split("/");
@@ -201,11 +201,11 @@ public class Converter {
     }
 
     public static String[] getAllIPsInNetwork(String completeIP) {
-        String[] allIPs = new String[toIntExact(IPtoInt(getBroadcastFromNetwork(completeIP) + "/20")  - IPtoInt(completeIP)) + 1];
+        String[] allIPs = new String[toIntExact(ipToLong(getBroadcastFromNetwork(completeIP) + "/20")  - ipToLong(completeIP)) + 1];
 
         int counter = 0;
-        for (long l = IPtoInt(completeIP); l <= IPtoInt(getBroadcastFromNetwork(completeIP) + "/20"); l++) {
-            allIPs[counter] =  intToIP(l);
+        for (long l = ipToLong(completeIP); l <= ipToLong(getBroadcastFromNetwork(completeIP) + "/20"); l++) {
+            allIPs[counter] =  longToIP(l);
             counter++;
         }
 
@@ -213,7 +213,7 @@ public class Converter {
     }
 
     public static String getBroadcastFromNetwork(String completeIP) {
-        long IPasLong = IPtoInt(completeIP);
+        long IPasLong = ipToLong(completeIP);
         int prefix = Integer.valueOf(completeIP.split("/")[1]);
 
         StringBuilder wildcardBuilder = new StringBuilder();
@@ -227,10 +227,10 @@ public class Converter {
         long broadcastAsLong = IPasLong + wildcardAsLong;
 
 
-        return intToIP(broadcastAsLong);
+        return longToIP(broadcastAsLong);
     }
 
-    public static String intToIP(long IPAsInt) {
+    public static String longToIP(long IPAsInt) {
         return ((IPAsInt >> 24) & 0xFF) + "." + ((IPAsInt >> 16) & 0xFF) + "." + ((IPAsInt >> 8) & 0xFF) + "." + (IPAsInt  & 0xFF);
     }
 
@@ -245,14 +245,31 @@ public class Converter {
     }
 
     public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
+
+        /*
+        String[] allNewIPs = getAllIPsInNetwork(newNetwork);
+
+        for (int i = 0; i < oldNetworks.length; i++) {
+            String[] allOldIPs = getAllIPsInNetwork(oldNetworks[i]);
+
+            for (int j = 0; j < allNewIPs.length; j++) {
+                if (Arrays.asList(allOldIPs).contains(allNewIPs[j])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+        */
+
         return Arrays.stream(oldNetworks).noneMatch(v -> isColliding(v, newNetwork));
     }
 
     public static boolean isColliding(String networkA, String networkB) {
-        long networkAId = IPtoInt(networkA);
-        long networkAMask = IPtoInt(prefixToMask(getPrefixFromCompleteNetwork(networkA)));
-        long networkBId = IPtoInt(networkB);
-        long networkBMask = IPtoInt(prefixToMask(getPrefixFromCompleteNetwork(networkB)));
+        long networkAId = ipToLong(networkA);
+        long networkAMask = ipToLong(prefixToMask(getPrefixFromCompleteNetwork(networkA)));
+        long networkBId = ipToLong(networkB);
+        long networkBMask = ipToLong(prefixToMask(getPrefixFromCompleteNetwork(networkB)));
         return isInSubnet(networkAId, networkAMask, networkBId)
                 || isInSubnet(networkBId, networkBMask, networkAId);
     }
@@ -264,7 +281,7 @@ public class Converter {
      * @param hostId host address
      * @return If the host address ist inside network ID/network mask combination
      */
-    static boolean isInSubnet(long networkId, long networkMask, long hostId) {
+    private static boolean isInSubnet(long networkId, long networkMask, long hostId) {
         return (hostId & networkMask) == (networkId & networkMask);
     }
 
@@ -276,8 +293,10 @@ public class Converter {
     public static String prefixToMask(int prefix) {
         if(prefix < 0 || prefix > 32) throw new IllegalArgumentException("Illegal prefix '" + prefix + "'");
         long mask = prefix == 0 ? 0 : -1 << (32 - prefix);
-        return intToIP(mask);
+        return longToIP(mask);
     }
+
+
 
     public static int getPrefixFromAmountOfHosts(int amountOfHosts) {
 
@@ -299,8 +318,8 @@ public class Converter {
     }
 
     public static String getNewFreeIPAfterNetwork(String network) {
-        long networkAsLong = IPtoInt(network);
-        return intToIP(networkAsLong + getAmountOfIPsFromPrefix(getPrefixFromCompleteNetwork(network)));
+        long networkAsLong = ipToLong(network);
+        return longToIP(networkAsLong + getAmountOfIPsFromPrefix(getPrefixFromCompleteNetwork(network)));
     }
 
 }

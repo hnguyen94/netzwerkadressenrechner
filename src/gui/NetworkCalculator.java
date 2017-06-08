@@ -1,6 +1,5 @@
 package gui;
 
-import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.io.FileWriter;
@@ -15,10 +14,7 @@ public class NetworkCalculator extends JFrame {
 
     public NetworkCalculator(String title, JSONArray data) {
 
-        // -------------------------------------------------------------------------------------------------------------
         // Add Action Listener to the TabbedPane to make it possible to close Tabs via the X-Tab
-        // -------------------------------------------------------------------------------------------------------------
-
         tabbedPane.addChangeListener(e -> {
             // If the Close Tab is clicked...
             if (tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()).equals("X")) {
@@ -49,11 +45,12 @@ public class NetworkCalculator extends JFrame {
 
     }
 
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
-    }
-
-    // Function to get the Tab Index from the Title
+    /**
+     *
+     * @param tabbedPane parent Tabs
+     * @param title parent String title
+     * @return index of the selected title in the tabbedpane
+     */
     public int getTabIndexFromTitle(JTabbedPane tabbedPane, String title) {
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             if (tabbedPane.getTitleAt(i).equals(title)) {
@@ -63,11 +60,14 @@ public class NetworkCalculator extends JFrame {
         return 0;
     }
 
+    /**
+     * Save all the data when closing the program
+     * @param e parent WindowEvent
+     */
     @Override
     protected void processWindowEvent(WindowEvent e) {
         if(e.getID() == WindowEvent.WINDOW_CLOSING){
             JSONArray networks = new JSONArray();
-
             DefaultListModel networkList = NetworkPanel.getModel();
             ArrayList<SubnetPanel> subnetPanels = NetworkPanel.getSubnetPanels();
             ArrayList<HostPanel> hostPanels = SubnetPanel.getHostPanels();
@@ -83,7 +83,6 @@ public class NetworkCalculator extends JFrame {
                         DefaultListModel subnetList = subnetPanel.getModel();
                         for (int j = 0; j < subnetList.getSize(); j++) {
                             String subnetString = subnetList.getElementAt(j).toString();
-
 
                             JSONArray hosts = new JSONArray();
                             for (HostPanel hostPanel: hostPanels) {
@@ -104,7 +103,6 @@ public class NetworkCalculator extends JFrame {
                                     }
                                 }
                             }
-
                             JSONObject subnet = new JSONObject();
                             subnet.put("subnet", subnetString);
                             subnet.put("hosts", hosts);
@@ -112,18 +110,15 @@ public class NetworkCalculator extends JFrame {
                         }
                     }
                 }
-
                 network.put("subnets", subnets);
                 networks.add(network);
 
             }
 
             JSONObject resultObject = new JSONObject();
-
             resultObject.put("data", networks);
 
-
-
+            // Write JSONObject to file
             try {
                 FileWriter file = new FileWriter("data.json");
                 file.write(resultObject.toJSONString());
@@ -133,9 +128,13 @@ public class NetworkCalculator extends JFrame {
                 e1.printStackTrace();
             }
 
-
         }
+        // Close the Window
         super.processWindowEvent(e);
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
     }
 
 }

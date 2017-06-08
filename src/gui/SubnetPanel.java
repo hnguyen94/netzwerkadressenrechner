@@ -35,7 +35,7 @@ public class SubnetPanel extends JPanel {
             }
         }
 
-
+        // Get Data from the old models
         ArrayList<SubnetPanel> allSubnetPanels = NetworkPanel.getSubnetPanels();
         for (int i = 0; i < allSubnetPanels.size(); i++) {
             if (allSubnetPanels.get(i).getNetworkTitle().equals(network)) {
@@ -43,10 +43,6 @@ public class SubnetPanel extends JPanel {
                 NetworkPanel.removeEntryFromArrayList(i);
             }
         }
-
-
-
-
 
         // Set networkTitle
         networkTitle = network;
@@ -56,13 +52,10 @@ public class SubnetPanel extends JPanel {
         // Initialise TabbedPane
         tabbedPane = networkCalculator.getTabbedPane();
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create Panels and give them specific Layout
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Create Interaction Panel for Open-, Delete-Button, IP-Numberfields and Create Button
+        /*
+         Create Panels and give them specific Layout
+         Create Interaction Panel for Open-, Delete-Button, IP-Numberfields and Create Button
+        */
         JPanel interactionPanel = new JPanel();
         interactionPanel.setLayout(new BoxLayout(interactionPanel, BoxLayout.PAGE_AXIS));
 
@@ -74,17 +67,15 @@ public class SubnetPanel extends JPanel {
         JPanel numberFieldsPanel = new JPanel();
         numberFieldsPanel.setLayout(new FlowLayout());
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create JList with ListModel
-        // -------------------------------------------------------------------------------------------------------------
-
-        // JList for all Networks
+        /*
+         Create JList with ListModel
+         JList for all Networks
+        */
         JScrollPane scrollPane = new JScrollPane();
         JList<String> subnetList =  new JList<>(model);
         scrollPane.setViewportView(subnetList);
 
+        //  Add SubnetList Mouse Listener to open new Subnets in Tabs via double click
         subnetList.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -114,14 +105,11 @@ public class SubnetPanel extends JPanel {
             }
         });
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create Open Button and Delete Button and add Action Listeners to open the from the list selected Network
-        // in a new Tab or to delete the selected Network from the list
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Open Selected Network Button
+        /*
+         Create Open Button and Delete Button and add Action Listeners to open the from the list selected Network
+         in a new Tab or to delete the selected Network from the list
+         Open Selected Network Button
+        */
         JButton openSubnetPanelButton = new JButton();
         openSubnetPanelButton.setText("Open");
         openSubnetPanelButton.addActionListener(e -> {
@@ -133,36 +121,24 @@ public class SubnetPanel extends JPanel {
         deleteSubnetPanelButton.setText("Delete");
         deleteSubnetPanelButton.addActionListener(e -> model.removeElement(subnetList.getSelectedValue()));
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
         // Create InputFields and set Preferred Size
-        // -------------------------------------------------------------------------------------------------------------
-
         JTextField amountOfHostsTextField = new JTextField();
         amountOfHostsTextField.setPreferredSize(new Dimension(40, 20));
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
         // Create createNewSubnetButton
-        // -------------------------------------------------------------------------------------------------------------
-
         JButton createNewSubnetButton = new JButton();
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
             int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
             int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
 
-
+            // if model is not empty
             if (model.getSize() != 0) {
                 boolean checker = false;
-
                 String[] allCurrentSubnets = new String[model.getSize()];
                 for (int i = 0; i < model.getSize(); i++) {
                     allCurrentSubnets[i] = model.getElementAt(i);
                 }
-
                 String[] allPossibleNewNetworks = new String[allCurrentSubnets.length];
                 for (int i = 0; i < allCurrentSubnets.length; i++) {
                     allPossibleNewNetworks[i] = Converter.getNewFreeIPAfterNetwork(allCurrentSubnets[i]);
@@ -180,32 +156,24 @@ public class SubnetPanel extends JPanel {
                             for (String sortedElement : sortedElements) {
                                 model.addElement(sortedElement);
                             }
-
-
                             checker = true;
                         }
                     }
-
                 }
 
+                // if not possible to generate new subnet network
                 if (!checker) {
                     JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
                             "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else {
+            } else { // if model is empty
                 String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
                 model.addElement(newNetworkBuilder);
             }
-
         });
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
         // Adding Elements to the different Panels
-        // -------------------------------------------------------------------------------------------------------------
-
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openSubnetPanelButton);
         openDeleteButtonPanel.add(deleteSubnetPanelButton);
@@ -219,17 +187,35 @@ public class SubnetPanel extends JPanel {
 
     }
 
+    /**
+     * open a new HostPanel & add to the tabbedPane
+     * @param subnetList parent List of Subnets
+     * @param networkCalculator parent NetworkCalculator
+     */
     public void openNewHostPanel(JList subnetList, NetworkCalculator networkCalculator) {
 
         String subnet = (String) subnetList.getSelectedValue();
-        if (subnet != null && networkCalculator.getTabIndexFromTitle(tabbedPane, subnet) == 0) {
+        String title = "Hosts: " + subnet;
+        if (subnet != null && networkCalculator.getTabIndexFromTitle(tabbedPane, title) == 0) {
             HostPanel hostPanel = new HostPanel(networkTitle, subnet, data);
             hostPanels.add(hostPanel);
-            tabbedPane.add(subnet, hostPanel);
-            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, subnet));
+            tabbedPane.add(title, hostPanel);
+            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, title));
             tabbedPane.add("X", new JPanel());
         }
     }
+
+    /**
+     * remove Entry with the given index in hostPanels
+     * @param index parent int
+     */
+    public static void removeEntryFromArrayList(int index) {
+        hostPanels.remove(index);
+    }
+
+    /*
+        Getter Methods for networkTitle, model & hostPanels
+     */
 
     public String getNetworkTitle() {
         return networkTitle;
@@ -243,7 +229,5 @@ public class SubnetPanel extends JPanel {
         return hostPanels;
     }
 
-    public static void removeEntryFromArrayList(int index) {
-        hostPanels.remove(index);
-    }
+
 }

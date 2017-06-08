@@ -1,16 +1,13 @@
 package logic;
 
-import com.sun.deploy.util.ArrayUtil;
 import logic.IPv4.IPv4Address;
 import logic.IPv4.IPv4Network;
 import logic.IPv4.IPv4Subnet;
-
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.IntStream;
-
 import static java.lang.Math.toIntExact;
 
 public class Converter {
@@ -163,28 +160,27 @@ public class Converter {
 
 
     public static IPv4Subnet convertStringToIpv4Subnet(String network){
-
         String[] ipAndSuffix = network.split("/");
-
         String[] ipAddress = ipAndSuffix[0].split("\\.");
-        System.out.println(network);
         int suffix = Integer.parseInt(ipAndSuffix[1]);
 
         return new IPv4Subnet(suffix,new IPv4Address(ipAddress,Type.DECIMAL));
     }
 
     public static IPv4Network convertStringToIpv4Network(String network){
-
         String[] ipAndSuffix = network.split("\\/");
-
         String[] ipAddress = ipAndSuffix[0].split("\\.");
-
         int suffix = Integer.parseInt(ipAndSuffix[1]);
 
         return new IPv4Network(suffix,new IPv4Address(ipAddress,Type.DECIMAL));
     }
 
 
+    /**
+     *
+     * @param completeIP parent IP Address String
+     * @return IP Address as Long
+     */
     public static long ipToLong(String completeIP){
         long iPBlock1, iPBlock2, iPBlock3, iPBlock4, iPasLong;
 
@@ -203,6 +199,11 @@ public class Converter {
         return iPasLong;
     }
 
+    /**
+     *
+     * @param completeIP parent Network
+     * @return Array of IP Address Strings
+     */
     public static String[] getAllIPsInNetwork(String completeIP) {
         String[] allIPs = new String[toIntExact(ipToLong(getBroadcastFromNetwork(completeIP) + "/20")  - ipToLong(completeIP)) + 1];
 
@@ -215,6 +216,11 @@ public class Converter {
         return allIPs;
     }
 
+    /**
+     *
+     * @param completeIP parent IP Address String
+     * @return Broadcast IP as Long
+     */
     public static String getBroadcastFromNetwork(String completeIP) {
         long IPasLong = ipToLong(completeIP);
         int prefix = Integer.valueOf(completeIP.split("/")[1]);
@@ -233,6 +239,11 @@ public class Converter {
         return longToIP(broadcastAsLong);
     }
 
+    /**
+     *
+     * @param IPAsInt parent IP address
+     * @return IP as a String
+     */
     public static String longToIP(long IPAsInt) {
         return ((IPAsInt >> 24) & 0xFF) + "." + ((IPAsInt >> 16) & 0xFF) + "." + ((IPAsInt >> 8) & 0xFF) + "." + (IPAsInt  & 0xFF);
     }
@@ -247,27 +258,22 @@ public class Converter {
         return reservedIPs;
     }
 
+    /**
+     *
+     * @param oldNetworks parent Network
+     * @param newNetwork parent Network
+     * @return true if new network is not colliding with some from the old networks, false if it does
+     */
     public static boolean checkIfPossibleNewNetwork(String[] oldNetworks, String newNetwork) {
-
-        /*
-        String[] allNewIPs = getAllIPsInNetwork(newNetwork);
-
-        for (int i = 0; i < oldNetworks.length; i++) {
-            String[] allOldIPs = getAllIPsInNetwork(oldNetworks[i]);
-
-            for (int j = 0; j < allNewIPs.length; j++) {
-                if (Arrays.asList(allOldIPs).contains(allNewIPs[j])) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-        */
-
         return Arrays.stream(oldNetworks).noneMatch(v -> isColliding(v, newNetwork));
     }
 
+    /**
+     *
+     * @param networkA parent network
+     * @param networkB parent network
+     * @return true if the two networks are colliding, false if not
+     */
     public static boolean isColliding(String networkA, String networkB) {
         long networkAId = ipToLong(networkA);
         long networkAMask = ipToLong(prefixToMask(getPrefixFromCompleteNetwork(networkA)));
@@ -299,35 +305,50 @@ public class Converter {
         return longToIP(mask);
     }
 
-
-
+    /**
+     *
+     * @param amountOfHosts parent hosts
+     * @return prefix
+     */
     public static int getPrefixFromAmountOfHosts(int amountOfHosts) {
-
         return (int) (32 - Math.ceil(Math.log(amountOfHosts + 2) / Math.log(2)));
-
     }
 
+    /**
+     *
+     * @param prefix parent prefix/subnetmask
+     * @return amount of hosts
+     */
     public static int getAmountOfIPsFromPrefix (int prefix) {
         return (int) Math.pow(2, 32 - prefix);
-
     }
 
-    public static String getSmallestNewSubnetInNetwork() {
-        return "Test";
-    }
-
+    /**
+     *
+     * @param network parent network
+     * @return prefix
+     */
     public static int getPrefixFromCompleteNetwork(String network) {
         return Integer.valueOf(network.split("/")[1]);
     }
 
+    /**
+     *
+     * @param network parent network
+     * @return next free Network ID IP Address
+     */
     public static String getNewFreeIPAfterNetwork(String network) {
         long networkAsLong = ipToLong(network);
         return longToIP(networkAsLong + getAmountOfIPsFromPrefix(getPrefixFromCompleteNetwork(network)));
     }
 
+    /**
+     *
+     * @param model
+     * @return sorted Array of network Strings
+     */
     public static String[] sortNetworksInModel(DefaultListModel model) {
         String[] networks = new String[model.size()];
-
 
         for (int i = 0; i < model.size(); i++) {
             networks[i] = model.get(i).toString();
@@ -342,6 +363,5 @@ public class Converter {
         return networks;
 
     }
-
 }
 

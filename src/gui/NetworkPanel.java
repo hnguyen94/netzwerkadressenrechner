@@ -1,42 +1,27 @@
 package gui;
 
-
 import logic.Converter;
-import logic.IPv4.NetworkCheck;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class NetworkPanel extends JPanel {
 
     private JTabbedPane tabbedPane;
     private static DefaultListModel<String> model = new DefaultListModel<>();
-
     private static ArrayList<SubnetPanel> subnetPanels = new ArrayList<>();
     private JSONArray data;
 
-
-
     public NetworkPanel(NetworkCalculator networkCalculator, JSONArray data) {
-        NetworkCheck check = new NetworkCheck(data);
-        //DELETE START
-        String[] ipDB = new String[data.size()];
-        //DELETE END
         this.data = data;
 
         // Get Data an write to listModel
-        for (int i = 0; i < data.size(); i++) {
-            JSONObject networkObject = (JSONObject) data.get(i);
-            //DELETE START
-            ipDB[i] = networkObject.get("id").toString();
-            //DELETE END
+        for (Object aData : data) {
+            JSONObject networkObject = (JSONObject) aData;
             model.addElement(networkObject.get("id").toString());
         }
 
@@ -45,13 +30,10 @@ public class NetworkPanel extends JPanel {
         // Initialise TabbedPane
         tabbedPane = networkCalculator.getTabbedPane();
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create Panels and give them specific Layout
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Create Interaction Panel for Open-, Delete-Button, IP-Numberfields and Create Button
+        /*
+         Create Panels and give them specific Layout
+         Create Interaction Panel for Open-, Delete-Button, IP-Numberfields and Create Button
+        */
         JPanel interactionPanel = new JPanel();
         interactionPanel.setLayout(new BoxLayout(interactionPanel, BoxLayout.PAGE_AXIS));
 
@@ -63,13 +45,10 @@ public class NetworkPanel extends JPanel {
         JPanel numberFieldsPanel = new JPanel();
         numberFieldsPanel.setLayout(new FlowLayout());
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create JList with ListModel
-        // -------------------------------------------------------------------------------------------------------------
-
-        // JList for all Networks
+        /*
+         Create JList with ListModel
+         JList for all Networks
+        */
         JScrollPane scrollPane = new JScrollPane();
         JList<String> networkList =  new JList<>(model);
         scrollPane.setViewportView(networkList);
@@ -100,14 +79,11 @@ public class NetworkPanel extends JPanel {
             }
         });
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create Open Button and Delete Button and add Action Listeners to open the from the list selected Network
-        // in a new Tab or to delete the selected Network from the list
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Open Selected Network Button
+        /*
+         Create Open Button and Delete Button and add Action Listeners to open the from the list selected Network
+         in a new Tab or to delete the selected Network from the list
+         Open Selected Network Button
+        */
         JButton openNetworkPanelButton = new JButton();
         openNetworkPanelButton.setText("Open");
         openNetworkPanelButton.addActionListener(e -> openNewSubnet(networkList, networkCalculator));
@@ -125,13 +101,10 @@ public class NetworkPanel extends JPanel {
             model.removeElement(currentSelectedTitle);
         });
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
-        // Create InputFields with Labels for the Optical View and adding all of them to the NumberField-Panel
-        // -------------------------------------------------------------------------------------------------------------
-
-        // Create New Network Button
+        /*
+         Create InputFields with Labels for the Optical View and adding all of them to the NumberField-Panel
+         Create New Network Button
+        */
         JButton createNewNetworkButton = new JButton();
         numberFieldsPanel.add(createNewNetworkButton);
         numberFieldsPanel.add(new JLabel("a new Network"));
@@ -154,12 +127,7 @@ public class NetworkPanel extends JPanel {
             }
         }
 
-
-
-        // -------------------------------------------------------------------------------------------------------------
         // Create Create New Network Button and add Action Listener to create new Networks
-        // -------------------------------------------------------------------------------------------------------------
-
         createNewNetworkButton.setText("Create");
         createNewNetworkButton.addActionListener(e -> {
 
@@ -209,11 +177,7 @@ public class NetworkPanel extends JPanel {
 
         });
 
-
-        // -------------------------------------------------------------------------------------------------------------
         // Adding Elements to the different Panels
-        // -------------------------------------------------------------------------------------------------------------
-
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openNetworkPanelButton);
         openDeleteButtonPanel.add(new JLabel("or"));
@@ -225,27 +189,41 @@ public class NetworkPanel extends JPanel {
 
     }
 
+    /**
+     * open a new SubnetPanel & add to the tabbedPane
+     * @param networkList parent List of Networks
+     * @param networkCalculator parent NetworkCalculator
+     */
+    private void openNewSubnet(JList networkList, NetworkCalculator networkCalculator){
+        String network = (String) networkList.getSelectedValue();
+        String title = "Subnetz: " + network;
+        if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, title) == 0) {
+            SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator, data);
+            subnetPanels.add(subnetPanel);
+            tabbedPane.add(title, subnetPanel);
+            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, title));
+            tabbedPane.add("X", new JPanel());
+        }
+    }
+
+    /**
+     * remove Entry with the given index in subnetPanels
+     * @param index parent int
+     */
+    public static void removeEntryFromArrayList(int index) {
+        subnetPanels.remove(index);
+    }
+
+    /*
+        Getter Methods for model & subnetPanels
+     */
+
     public static DefaultListModel<String> getModel() {
         return model;
     }
 
     public static ArrayList<SubnetPanel> getSubnetPanels() {
         return subnetPanels;
-    }
-
-    private void openNewSubnet(JList networkList, NetworkCalculator networkCalculator){
-        String network = (String) networkList.getSelectedValue();
-        if (network != null && networkCalculator.getTabIndexFromTitle(tabbedPane, network) == 0) {
-            SubnetPanel subnetPanel = new SubnetPanel(network, networkCalculator, data);
-            subnetPanels.add(subnetPanel);
-            tabbedPane.add(network, subnetPanel);
-            tabbedPane.setSelectedIndex(networkCalculator.getTabIndexFromTitle(tabbedPane, network));
-            tabbedPane.add("X", new JPanel());
-        }
-    }
-
-    public static void removeEntryFromArrayList(int index) {
-        subnetPanels.remove(index);
     }
 
 }

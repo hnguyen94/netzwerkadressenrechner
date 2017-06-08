@@ -1,11 +1,71 @@
 package logic;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static java.lang.Math.toIntExact;
 
 public class Converter {
+    
+
+    public static String convertIpToBinary(String ip){
+        String[] ipBlocks = ip.split("\\.");
+        String ipAsBinary = Arrays.stream(ipBlocks)
+                            .map(ipBlock -> convertIpBlockToBinary(new StringBuilder(),Integer.parseInt(ipBlock)).concat("."))
+                            .collect(Collectors.joining());
+        return ipAsBinary.substring(0,ipAsBinary.length() - 1 );
+    }
+
+    public static String convertIpBlockToBinary(StringBuilder convertedIpBlock, int num){
+        if(num == 0 && convertedIpBlock.length() > 7){
+            return convertedIpBlock.reverse().toString();
+        }
+
+        convertedIpBlock.append(String.valueOf(num % 2));
+        return convertIpBlockToBinary(convertedIpBlock,num / 2);
+    }
+
+    public static String convertIpToHex(String ip){
+        String[] ipBlocks = ip.split("\\.");
+        String ipAsHex = Arrays.stream(ipBlocks)
+                .map(ipBlock -> convertIpBlockToHex(new StringBuilder(),Integer.parseInt(ipBlock)).concat("."))
+                .collect(Collectors.joining());
+        return ipAsHex.substring(0,ipAsHex.length() - 1 );
+    }
+
+    public static String convertIpBlockToHex(StringBuilder convertedIpBlock, int num){
+        if(num == 0 && convertedIpBlock.length() > 1){
+            return convertedIpBlock.reverse().toString();
+        }
+
+        convertedIpBlock.append(digitToHex(num % 16));
+        return convertIpBlockToHex(convertedIpBlock,num / 16);
+    }
+
+    public static String digitToHex(int digit){
+        switch (digit){
+            case 10:
+                return "A";
+            case 11:
+                return "B";
+            case 12:
+                return "C";
+            case 13:
+                return "D";
+            case 14:
+                return "E";
+            case 15:
+                return "F";
+            default:
+                return String.valueOf(digit);
+        }
+    }
+
 
     /**
      *

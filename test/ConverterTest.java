@@ -5,6 +5,37 @@ import static org.junit.Assert.assertEquals;
 public class ConverterTest {
 
     @Test
+    public void convertToBinaryTest(){
+        assertEquals("11000010.10101000.00000010.00000001", Converter.convertIpToBinary("194.168.2.1"));
+        assertEquals("10000000.10100100.00000000.00000111", Converter.convertIpToBinary("128.164.0.7"));
+    }
+
+    @Test
+    public void convertIPBlockToBinary(){
+        assertEquals("10000000", Converter.convertIpBlockToBinary(new StringBuilder(),128));
+        assertEquals("10100100", Converter.convertIpBlockToBinary(new StringBuilder(),164));
+        assertEquals("00000000", Converter.convertIpBlockToBinary(new StringBuilder(),0));
+        assertEquals("00000111", Converter.convertIpBlockToBinary(new StringBuilder(),7));
+        assertEquals("00111000", Converter.convertIpBlockToBinary(new StringBuilder(),56));
+
+    }
+
+    @Test
+    public void convertToHexTest(){
+        assertEquals("C2.A8.02.01", Converter.convertIpToHex("194.168.2.1"));
+        assertEquals("87.A5.00.38", Converter.convertIpToHex("135.165.0.56"));
+    }
+
+    @Test
+    public void convertIpBlockToHex(){
+        assertEquals("87", Converter.convertIpBlockToHex(new StringBuilder(),135));
+        assertEquals("A5", Converter.convertIpBlockToHex(new StringBuilder(),165));
+        assertEquals("00", Converter.convertIpBlockToHex(new StringBuilder(),0));
+        assertEquals("07", Converter.convertIpBlockToHex(new StringBuilder(),7));
+        assertEquals("38", Converter.convertIpBlockToHex(new StringBuilder(),56));
+    }
+
+    @Test
     public void prefixToMaskTest() {
         int prefix0 = 0;
         String mask0 = "0.0.0.0";

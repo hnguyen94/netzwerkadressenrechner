@@ -69,6 +69,36 @@ public class HostPanel extends JPanel {
         // Scroll Pane for the Panel to scroll the lists
         JScrollPane scrollPane = new JScrollPane(listContent);
 
+        // Add Mouse Listener to the host List to view more Information about the host
+        hostList.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    NetworkCalculator.showMoreInformationAboutTheHostIP(hostList.getSelectedValue());
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         // Add Mouse Listener to the notes List to change notes
         notesList.addMouseListener(new MouseListener() {
             @Override
@@ -124,7 +154,6 @@ public class HostPanel extends JPanel {
                 }
             }
         }
-
 
         // Add scroll Pane to HostPanel
         this.add(scrollPane, BorderLayout.CENTER);

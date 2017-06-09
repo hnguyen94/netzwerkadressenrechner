@@ -124,6 +124,7 @@ public class SubnetPanel extends JPanel {
         // Show more Information from selected Subnet
         JButton showData = new JButton("Information");
         showData.addActionListener(e -> {
+            NetworkCalculator.showMoreInformationAboutNetwork(subnetList.getSelectedValue());
 
 
         });
@@ -184,7 +185,7 @@ public class SubnetPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openSubnetPanelButton);
         openDeleteButtonPanel.add(deleteSubnetPanelButton);
-        openDeleteButtonPanel.add();
+        openDeleteButtonPanel.add(showData);
         interactionPanel.add(openDeleteButtonPanel);
         numberFieldsPanel.add(createNewSubnetButton);
         numberFieldsPanel.add(new JLabel("a new Subnet with"));
@@ -219,6 +220,10 @@ public class SubnetPanel extends JPanel {
      */
     public static void removeEntryFromArrayList(int index) {
         hostPanels.remove(index);
+    }
+
+    public static void addEntryToArrayList(HostPanel hostPanel) {
+        hostPanels.add(hostPanel);
     }
 
     /*

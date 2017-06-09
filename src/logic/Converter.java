@@ -244,5 +244,10 @@ public class Converter {
         return networks;
 
     }
+
+    public static String getSubnetMaskFromNetwork(String network) {
+        int prefix = Integer.valueOf(network.split("/")[1]);
+        return prefixToMask(prefix);
+    }
 }
 

@@ -85,12 +85,12 @@ public class NetworkPanel extends JPanel {
          Open Selected Network Button
         */
         JButton openNetworkPanelButton = new JButton();
-        openNetworkPanelButton.setText("Open");
+        openNetworkPanelButton.setText("Öffnen");
         openNetworkPanelButton.addActionListener(e -> openNewSubnet(networkList, networkCalculator));
 
         // Delete Selected Network Button
         JButton deleteNetworkPanelButton = new JButton();
-        deleteNetworkPanelButton.setText("Delete");
+        deleteNetworkPanelButton.setText("Löschen");
         deleteNetworkPanelButton.addActionListener(e -> {
             String currentSelectedTitle = networkList.getSelectedValue();
             int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle);
@@ -102,8 +102,9 @@ public class NetworkPanel extends JPanel {
         });
 
         // Show more Information Button
-        JButton showData = new JButton("Information");
+        JButton showData = new JButton("Informationen");
         showData.addActionListener(e -> {
+            NetworkCalculator.showMoreInformationAboutNetwork(networkList.getSelectedValue());
 
         });
 
@@ -134,7 +135,7 @@ public class NetworkPanel extends JPanel {
         }
 
         // Create Create New Network Button and add Action Listener to create new Networks
-        createNewNetworkButton.setText("Create");
+        createNewNetworkButton.setText("Anlegen");
         createNewNetworkButton.addActionListener(e -> {
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -217,6 +218,10 @@ public class NetworkPanel extends JPanel {
      */
     public static void removeEntryFromArrayList(int index) {
         subnetPanels.remove(index);
+    }
+
+    public static void addEntryToArrayList(SubnetPanel subnetPanel) {
+        subnetPanels.add(subnetPanel);
     }
 
     /*

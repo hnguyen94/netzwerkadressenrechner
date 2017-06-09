@@ -46,9 +46,9 @@ public class ConverterTest {
         int prefix3 = 16;
         String mask3 = "255.255.0.0";
         assertEquals(mask0, Converter.prefixToMask(prefix0));
-        assertEquals(mask0, Converter.prefixToMask(prefix0));
-        assertEquals(mask0, Converter.prefixToMask(prefix0));
-        assertEquals(mask0, Converter.prefixToMask(prefix0));
+        assertEquals(mask1, Converter.prefixToMask(prefix1));
+        assertEquals(mask2, Converter.prefixToMask(prefix2));
+        assertEquals(mask3, Converter.prefixToMask(prefix3));
     }
 
     @Test

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import static java.lang.Math.toIntExact;
 
 public class Converter {
-    
+
 
     public static String convertIpToBinary(String ip){
         String[] ipBlocks = ip.split("\\.");

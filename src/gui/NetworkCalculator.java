@@ -1,9 +1,11 @@
 package gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class NetworkCalculator extends JFrame {
 
     private JTabbedPane tabbedPane = new JTabbedPane();
 
-    public NetworkCalculator(String title, JSONArray data) {
+    public NetworkCalculator(String title, JSONArray data) throws IOException {
 
         for (int i = 0; i < data.size(); i++) {
             JSONObject networkObject = (JSONObject) data.get(i);
@@ -65,6 +67,8 @@ public class NetworkCalculator extends JFrame {
         setMinimumSize(new Dimension(600, 600));
         setLocationRelativeTo(null);
         setTitle(title);
+
+        setIconImage(ImageIO.read(new File("calculator.png")));
 
         add(tabbedPane);
 

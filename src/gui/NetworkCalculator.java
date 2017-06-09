@@ -137,4 +137,8 @@ public class NetworkCalculator extends JFrame {
         return tabbedPane;
     }
 
+    public static void showMoreInformationAboutNetwork() {
+
+    }
+
 }

@@ -101,6 +101,12 @@ public class NetworkPanel extends JPanel {
             model.removeElement(currentSelectedTitle);
         });
 
+        // Show more Information Button
+        JButton showData = new JButton("Information");
+        showData.addActionListener(e -> {
+
+        });
+
         /*
          Create InputFields with Labels for the Optical View and adding all of them to the NumberField-Panel
          Create New Network Button
@@ -180,9 +186,8 @@ public class NetworkPanel extends JPanel {
         // Adding Elements to the different Panels
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openNetworkPanelButton);
-        openDeleteButtonPanel.add(new JLabel("or"));
         openDeleteButtonPanel.add(deleteNetworkPanelButton);
-        openDeleteButtonPanel.add(new JLabel("selected Network from List"));
+        openDeleteButtonPanel.add(showData);
         interactionPanel.add(openDeleteButtonPanel);
         interactionPanel.add(numberFieldsPanel);
         add(interactionPanel, BorderLayout.PAGE_END);

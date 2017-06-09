@@ -121,6 +121,13 @@ public class SubnetPanel extends JPanel {
         deleteSubnetPanelButton.setText("Delete");
         deleteSubnetPanelButton.addActionListener(e -> model.removeElement(subnetList.getSelectedValue()));
 
+        // Show more Information from selected Subnet
+        JButton showData = new JButton("Information");
+        showData.addActionListener(e -> {
+
+
+        });
+
         // Create InputFields and set Preferred Size
         JTextField amountOfHostsTextField = new JTextField();
         amountOfHostsTextField.setPreferredSize(new Dimension(40, 20));
@@ -177,6 +184,7 @@ public class SubnetPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openSubnetPanelButton);
         openDeleteButtonPanel.add(deleteSubnetPanelButton);
+        openDeleteButtonPanel.add();
         interactionPanel.add(openDeleteButtonPanel);
         numberFieldsPanel.add(createNewSubnetButton);
         numberFieldsPanel.add(new JLabel("a new Subnet with"));

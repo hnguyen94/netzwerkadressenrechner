@@ -13,6 +13,7 @@ import com.sun.jmx.remote.security.JMXPluggableAuthenticator;
 import logic.Converter;
 import org.json.simple.*;
 import sun.nio.ch.Net;
+import sun.swing.SwingAccessor;
 
 public class NetworkCalculator extends JFrame {
 
@@ -182,7 +183,7 @@ public class NetworkCalculator extends JFrame {
         // Set Parameter
         dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         dialog.setTitle("Informationen zum Netz");
-        dialog.setSize(600,500);
+        dialog.setSize(550,500);
         dialog.setLocationRelativeTo(null);
 
         // Generate Content for Decimal
@@ -225,13 +226,17 @@ public class NetworkCalculator extends JFrame {
 
         // Title Panels
         JPanel decimalTitle = new JPanel();
-        decimalTitle.add(new JLabel("Dezimal"));
+        JLabel decimalTitleLabel = new JLabel("<html><u>Dezimal</u></html>");
+        decimalTitle.add(decimalTitleLabel);
         JPanel binaryTitle = new JPanel();
-        binaryTitle.add(new JLabel("Binär"));
+        JLabel binaryTitleLabel = new JLabel("<html><u>Binär</u></html>");
+        binaryTitle.add(binaryTitleLabel);
         JPanel hexTitle = new JPanel();
-        hexTitle.add(new JLabel("Hexadezimal"));
+        JLabel hexTitleLable = new JLabel("<html><u>Hexadezimal</u></html>");
+        hexTitle.add(hexTitleLable);
         JPanel extraTitle = new JPanel();
-        extraTitle.add(new JLabel("Sonstiges"));
+        JLabel extraTitleLabel = new JLabel("<html><u>Sonstiges</u></html>");
+        extraTitle.add(extraTitleLabel);
 
         // Build the whole Content for Deciaml
         JPanel decimal = new JPanel();
@@ -274,7 +279,7 @@ public class NetworkCalculator extends JFrame {
         String hostAsHex = Converter.convertIpToHex(hostAsDecimal);
 
         JDialog dialog = new JDialog();
-        dialog.setSize(600, 160);
+        dialog.setSize(550, 160);
         dialog.setTitle("Informationen zum Host");
         dialog.setLocationRelativeTo(null);
 
@@ -288,7 +293,7 @@ public class NetworkCalculator extends JFrame {
         content.add(new JLabel(hostAsHex));
 
         JPanel title = new JPanel();
-        title.add(new JLabel("IP Adresse"));
+        title.add(new JLabel("<html><u>IP Adresse</u></html>"));
 
         JPanel data = new JPanel();
         data.setLayout(new BorderLayout());

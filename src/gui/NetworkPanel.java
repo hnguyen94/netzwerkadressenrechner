@@ -104,7 +104,9 @@ public class NetworkPanel extends JPanel {
         // Show more Information Button
         JButton showData = new JButton("Informationen");
         showData.addActionListener(e -> {
-            NetworkCalculator.showMoreInformationAboutNetwork(networkList.getSelectedValue());
+            if (networkList.getSelectedValue() != null) {
+                NetworkCalculator.showMoreInformationAboutNetwork(networkList.getSelectedValue());
+            }
 
         });
 

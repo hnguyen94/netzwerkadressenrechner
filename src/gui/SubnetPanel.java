@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SubnetPanel extends JPanel {
 
@@ -124,7 +125,9 @@ public class SubnetPanel extends JPanel {
         // Show more Information from selected Subnet
         JButton showData = new JButton("Information");
         showData.addActionListener(e -> {
-            NetworkCalculator.showMoreInformationAboutNetwork(subnetList.getSelectedValue());
+            if (subnetList.getSelectedValue() != null) {
+                NetworkCalculator.showMoreInformationAboutNetwork(subnetList.getSelectedValue());
+            }
 
 
         });
@@ -137,47 +140,50 @@ public class SubnetPanel extends JPanel {
         JButton createNewSubnetButton = new JButton();
         createNewSubnetButton.setText("Create");
         createNewSubnetButton.addActionListener(e -> {
-            int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
-            int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
+            if (!Objects.equals(amountOfHostsTextField.getText(), "")) {
+                int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());
+                int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
 
-            // if model is not empty
-            if (model.getSize() != 0) {
-                boolean checker = false;
-                String[] allCurrentSubnets = new String[model.getSize()];
-                for (int i = 0; i < model.getSize(); i++) {
-                    allCurrentSubnets[i] = model.getElementAt(i);
-                }
-                String[] allPossibleNewNetworks = new String[allCurrentSubnets.length];
-                for (int i = 0; i < allCurrentSubnets.length; i++) {
-                    allPossibleNewNetworks[i] = Converter.getNewFreeIPAfterNetwork(allCurrentSubnets[i]);
-                }
+                // if model is not empty
 
-                for (int i = 0; i < allPossibleNewNetworks.length; i++) {
-                    String possibleNewNetwork = allPossibleNewNetworks[i] + "/" + prefixAccordingToTheHosts;
-                    if (!checker && Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
-                        if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
+                if (model.getSize() != 0) {
+                    boolean checker = false;
+                    String[] allCurrentSubnets = new String[model.getSize()];
+                    for (int i = 0; i < model.getSize(); i++) {
+                        allCurrentSubnets[i] = model.getElementAt(i);
+                    }
+                    String[] allPossibleNewNetworks = new String[allCurrentSubnets.length];
+                    for (int i = 0; i < allCurrentSubnets.length; i++) {
+                        allPossibleNewNetworks[i] = Converter.getNewFreeIPAfterNetwork(allCurrentSubnets[i]);
+                    }
 
-                            model.addElement(possibleNewNetwork);
-                            // sort the elements from the model
-                            String[] sortedElements = Converter.sortNetworksInModel(model);
-                            model.removeAllElements();
-                            for (String sortedElement : sortedElements) {
-                                model.addElement(sortedElement);
+                    for (int i = 0; i < allPossibleNewNetworks.length; i++) {
+                        String possibleNewNetwork = allPossibleNewNetworks[i] + "/" + prefixAccordingToTheHosts;
+                        if (!checker && Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
+                            if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
+
+                                model.addElement(possibleNewNetwork);
+                                // sort the elements from the model
+                                String[] sortedElements = Converter.sortNetworksInModel(model);
+                                model.removeAllElements();
+                                for (String sortedElement : sortedElements) {
+                                    model.addElement(sortedElement);
+                                }
+                                checker = true;
                             }
-                            checker = true;
                         }
                     }
-                }
 
-                // if not possible to generate new subnet network
-                if (!checker) {
-                    JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
-                            "Eingabefehler", JOptionPane.ERROR_MESSAGE);
-                }
+                    // if not possible to generate new subnet network
+                    if (!checker) {
+                        JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
+                                "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                    }
 
-            } else { // if model is empty
-                String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
-                model.addElement(newNetworkBuilder);
+                } else { // if model is empty
+                    String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
+                    model.addElement(newNetworkBuilder);
+                }
             }
         });
 

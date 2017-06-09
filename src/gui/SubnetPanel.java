@@ -112,18 +112,27 @@ public class SubnetPanel extends JPanel {
          Open Selected Network Button
         */
         JButton openSubnetPanelButton = new JButton();
-        openSubnetPanelButton.setText("Open");
+        openSubnetPanelButton.setText("Öffnen");
         openSubnetPanelButton.addActionListener(e -> {
             openNewHostPanel(subnetList, networkCalculator);
         });
 
         // Delete Selected Network Button
         JButton deleteSubnetPanelButton = new JButton();
-        deleteSubnetPanelButton.setText("Delete");
-        deleteSubnetPanelButton.addActionListener(e -> model.removeElement(subnetList.getSelectedValue()));
+        deleteSubnetPanelButton.setText("Löschen");
+        deleteSubnetPanelButton.addActionListener(e -> {
+            String currentSelectedTitle = subnetList.getSelectedValue();
+            String title = "Hosts: " + currentSelectedTitle;
+            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, title);
+            if (selectedTabIndex != 0) {
+                tabbedPane.remove(selectedTabIndex);
+                tabbedPane.remove(selectedTabIndex);
+            }
+            model.removeElement(currentSelectedTitle);
+        });
 
         // Show more Information from selected Subnet
-        JButton showData = new JButton("Information");
+        JButton showData = new JButton("Informationen");
         showData.addActionListener(e -> {
             if (subnetList.getSelectedValue() != null) {
                 NetworkCalculator.showMoreInformationAboutNetwork(subnetList.getSelectedValue());
@@ -138,7 +147,7 @@ public class SubnetPanel extends JPanel {
 
         // Create createNewSubnetButton
         JButton createNewSubnetButton = new JButton();
-        createNewSubnetButton.setText("Create");
+        createNewSubnetButton.setText("Anlegen");
         createNewSubnetButton.addActionListener(e -> {
             if (!Objects.equals(amountOfHostsTextField.getText(), "")) {
                 int minAmountOfHosts = Integer.valueOf(amountOfHostsTextField.getText());

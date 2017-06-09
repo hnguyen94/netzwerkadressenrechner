@@ -93,7 +93,8 @@ public class NetworkPanel extends JPanel {
         deleteNetworkPanelButton.setText("Löschen");
         deleteNetworkPanelButton.addActionListener(e -> {
             String currentSelectedTitle = networkList.getSelectedValue();
-            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, currentSelectedTitle);
+            String title = "Subnetz: " + currentSelectedTitle;
+            int selectedTabIndex = networkCalculator.getTabIndexFromTitle(tabbedPane, title);
             if (selectedTabIndex != 0) {
                 tabbedPane.remove(selectedTabIndex);
                 tabbedPane.remove(selectedTabIndex);
@@ -173,15 +174,15 @@ public class NetworkPanel extends JPanel {
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Netzwerke überlagern sich",
-                                "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                                "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Netwerk bereits vorhanden",
-                            "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                            "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Ungültiges Netzwerk",
-                        "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                        "Eingabefehler", JOptionPane.ERROR_MESSAGE);
             }
 
         });

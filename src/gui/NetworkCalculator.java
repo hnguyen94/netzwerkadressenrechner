@@ -68,7 +68,7 @@ public class NetworkCalculator extends JFrame {
         setLocationRelativeTo(null);
         setTitle(title);
 
-        setIconImage(ImageIO.read(new File("calculator.png")));
+        setIconImage(ImageIO.read(new File("network_calculator.png")));
 
         add(tabbedPane);
 

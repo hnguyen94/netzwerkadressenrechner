@@ -45,6 +45,10 @@ public class NetworkPanel extends JPanel {
         JPanel numberFieldsPanel = new JPanel();
         numberFieldsPanel.setLayout(new FlowLayout());
 
+        // Subnetmask Panel
+        JPanel subnetmaskPanel = new JPanel();
+        subnetmaskPanel.setLayout(new FlowLayout());
+
         /*
          Create JList with ListModel
          JList for all Networks
@@ -189,6 +193,44 @@ public class NetworkPanel extends JPanel {
 
         });
 
+        // Subnetmask Button
+        JButton subnetmaskButton = new JButton("Subnetmaske -> Präfix");
+        subnetmaskPanel.add(subnetmaskButton);
+
+        JTextField[] subnetmaskArray = new JTextField[4];
+        for (int i = 0; i < subnetmaskArray.length; i++) {
+            subnetmaskArray[i] = new JTextField();
+            subnetmaskArray[i].setPreferredSize(new Dimension(40, 20));
+            if (i < subnetmaskArray.length - 1) {
+                subnetmaskPanel.add(subnetmaskArray[i]);
+                subnetmaskPanel.add(new JLabel("."));
+            } else {
+                subnetmaskPanel.add(subnetmaskArray[i]);
+            }
+        }
+
+        // Action Listener for SubnetMask Converter Button
+        subnetmaskButton.addActionListener(e -> {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < subnetmaskArray.length; i++) {
+                if (i < subnetmaskArray.length - 1) {
+                    stringBuilder.append(subnetmaskArray[i].getText());
+                    stringBuilder.append(".");
+                } else {
+                    stringBuilder.append(subnetmaskArray[i].getText());
+                }
+            }
+
+            String subnetmaskAsString = stringBuilder.toString();
+
+            if (NetworkAddressValidator.validateSubnetMask(subnetmaskAsString)) {
+                textFields[textFields.length - 1].setText(String.valueOf(Converter.maskToPrefix(subnetmaskAsString)));
+            } else {
+                JOptionPane.showMessageDialog(null, "Ungültige Subnetzmaske",
+                        "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         // Adding Elements to the different Panels
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openNetworkPanelButton);
@@ -196,8 +238,8 @@ public class NetworkPanel extends JPanel {
         openDeleteButtonPanel.add(showData);
         interactionPanel.add(openDeleteButtonPanel);
         interactionPanel.add(numberFieldsPanel);
+        interactionPanel.add(subnetmaskPanel);
         add(interactionPanel, BorderLayout.PAGE_END);
-
     }
 
     /**

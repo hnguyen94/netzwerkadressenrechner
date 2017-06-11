@@ -1,5 +1,7 @@
 package logic;
 
+import com.sun.deploy.util.StringUtils;
+
 import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -187,6 +189,23 @@ public class Converter {
     }
 
     /**
+     * Converts a Subnetmask String into a prefix as int
+     * @param mask parent SubnetMask
+     * @return prefix
+     */
+    public static int maskToPrefix(String mask) {
+        String[] maskBlocks = mask.split("\\.");
+        StringBuilder maskAsBinary = new StringBuilder();
+
+        for (int i = 0; i < maskBlocks.length; i++){
+            maskAsBinary.append(Integer.toBinaryString(Integer.valueOf(maskBlocks[i])));
+        }
+
+        String maskAsBinaryString = maskAsBinary.toString();
+        return maskAsBinaryString.length() - maskAsBinaryString.replace("1", "").length();
+    }
+
+    /**
      *
      * @param amountOfHosts parent hosts
      * @return prefix
@@ -245,6 +264,11 @@ public class Converter {
 
     }
 
+    /**
+     * Converts a Prefix into a SubnetMask
+     * @param network parent Network
+     * @return Subnetmask
+     */
     public static String getSubnetMaskFromNetwork(String network) {
         int prefix = Integer.valueOf(network.split("/")[1]);
         return prefixToMask(prefix);

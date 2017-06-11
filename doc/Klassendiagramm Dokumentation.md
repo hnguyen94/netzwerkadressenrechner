@@ -32,3 +32,15 @@ Ein JTabbedPane, ein JSONArray, eine DefaultListModel und eine ArrayList. Der De
 Der Konstruktor vom NetworkPanel hat als Parameter ein NetworkCalculator und ein JSONArray. Damit auf die Methoden des NetworkCalculator zugegriffen werden kann wird dieser übergeben, das JSONArray enthält die bereits vorhandenen Netzwerke. In dem NetworkPanel wird ein MouseListener implementiert welcher ein Doppelklick auf die Netzwerke ermöglicht, um ein SubnetPanel zu öffnen, welcher als Tab angezeigt wird.  
 Die Methode *openNewSubnet* öffnet ein neues Subnetz und erwartet als Parameter eine JList und ein NetworkCalculator. Die Jlist enthält die Netzwerke und mittels des NetworkCalculators wird überprüft ob, ein neues Tab geöffnet werden muss oder nicht.
 Um einen Wert aus ArrayList zu entfernen gibt es die statische Methode *removeEntryFromArrayList* welche ein int erwartet. Damit ein Value zur ArrayList hinzugefügt werden kann gibt es die statische Methode *addEntryToArrayList* welche auch ein int erwartet
+
+
+## Hostpanel
+Die Klasse Hostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.
+Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als static gespeichert.
+*HostPanel* wird von NetworkCalculator instanziiert, die folgende Parameter brauchen:
+  - Netzwerkadresse(String)
+  - Subnetzadresse(String)
+  - JSONArray(data) ??
+
+ ## SubnetPanel
+Das Panel enthält

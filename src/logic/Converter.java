@@ -21,13 +21,13 @@ public class Converter {
         return ipAsBinary.substring(0,ipAsBinary.length() - 1 );
     }
 
-    public static String convertIpBlockToBinary(StringBuilder convertedIpBlock, int num){
-        if(num == 0 && convertedIpBlock.length() > 7){
+    public static String convertIpBlockToBinary(StringBuilder convertedIpBlock, int numToConvert){
+        if(numToConvert == 0 && convertedIpBlock.length() > 7){
             return convertedIpBlock.reverse().toString();
         }
 
-        convertedIpBlock.append(String.valueOf(num % 2));
-        return convertIpBlockToBinary(convertedIpBlock,num / 2);
+        convertedIpBlock.append(String.valueOf(numToConvert % 2));
+        return convertIpBlockToBinary(convertedIpBlock,numToConvert / 2);
     }
 
     public static String convertIpToHex(String ip){
@@ -38,16 +38,16 @@ public class Converter {
         return ipAsHex.substring(0,ipAsHex.length() - 1 );
     }
 
-    public static String convertIpBlockToHex(StringBuilder convertedIpBlock, int num){
-        if(num == 0 && convertedIpBlock.length() > 1){
+    public static String convertIpBlockToHex(StringBuilder convertedIpBlock, int numToConvert){
+        if(numToConvert == 0 && convertedIpBlock.length() > 1){
             return convertedIpBlock.reverse().toString();
         }
 
-        convertedIpBlock.append(digitToHex(num % 16));
-        return convertIpBlockToHex(convertedIpBlock,num / 16);
+        convertedIpBlock.append(digitToHex(numToConvert % 16));
+        return convertIpBlockToHex(convertedIpBlock,numToConvert / 16);
     }
 
-    public static String digitToHex(int digit){
+    private static String digitToHex(int digit){
         switch (digit){
             case 10:
                 return "A";
@@ -135,7 +135,7 @@ public class Converter {
      * @param IPAsInt parent IP address
      * @return IP as a String
      */
-    public static String longToIP(long IPAsInt) {
+    private static String longToIP(long IPAsInt) {
         return ((IPAsInt >> 24) & 0xFF) + "." + ((IPAsInt >> 16) & 0xFF) + "." + ((IPAsInt >> 8) & 0xFF) + "." + (IPAsInt  & 0xFF);
     }
 

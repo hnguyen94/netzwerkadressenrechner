@@ -1,6 +1,7 @@
 package gui;
 
 import logic.Converter;
+import logic.NetworkAddressValidator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import javax.swing.*;

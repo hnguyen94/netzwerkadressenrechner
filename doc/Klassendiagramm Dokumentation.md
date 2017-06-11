@@ -37,10 +37,8 @@ Um einen Wert aus ArrayList zu entfernen gibt es die statische Methode *removeEn
 ## Hostpanel
 Die Klasse Hostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.
 Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als static gespeichert.
-*HostPanel* wird von NetworkCalculator instanziiert, die folgende Parameter brauchen:
-  - Netzwerkadresse(String)
-  - Subnetzadresse(String)
-  - JSONArray(data) ??
+Der Konstruktor hat als Parameter zwei Strings und ein JSONArray, die beiden Strings enthalten jeweils das Netzwerk und das Subnetz, mittels des JSONArray's werden die bisher vorhandenen Hosts mit deren Notizen angezeigt. Falls keine Hosts bisher vorhanden sind, werden diese neue erstellt.
+Das HostPanel implementiert zudem ein MouseListener, welcher bei Doppelklick auf eine HostAdresse zusätzliche Informationen anzeigt.
 
 ## SubnetPanel
 Das Panel enthält

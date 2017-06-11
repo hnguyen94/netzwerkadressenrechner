@@ -117,7 +117,7 @@ public class NetworkPanel extends JPanel {
         */
         JButton createNewNetworkButton = new JButton();
         numberFieldsPanel.add(createNewNetworkButton);
-        numberFieldsPanel.add(new JLabel("a new Network"));
+        numberFieldsPanel.add(new JLabel("eines neuen Netzwerkes:"));
 
         // TextFields
         JTextField[] textFields = new JTextField[5];

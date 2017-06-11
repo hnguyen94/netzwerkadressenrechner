@@ -217,9 +217,9 @@ public class SubnetPanel extends JPanel {
         openDeleteButtonPanel.add(showData);
         interactionPanel.add(openDeleteButtonPanel);
         numberFieldsPanel.add(createNewSubnetButton);
-        numberFieldsPanel.add(new JLabel("a new Subnet with"));
+        numberFieldsPanel.add(new JLabel("eines neuen Subnetzes mit:"));
         numberFieldsPanel.add(amountOfHostsTextField);
-        numberFieldsPanel.add(new JLabel("hosts"));
+        numberFieldsPanel.add(new JLabel("Hosts"));
         interactionPanel.add(numberFieldsPanel);
         add(interactionPanel, BorderLayout.PAGE_END);
 

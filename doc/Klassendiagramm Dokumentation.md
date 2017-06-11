@@ -24,6 +24,16 @@ Damit auf die einzelnen Tabs des tabbedPane einfacher wieder zugegriffen werden 
 Die Methoden *showMoreInformationAboutNetwork* und *showMoreInformationAboutTheHostIP* erwarten jeweils einen String und sind vom Typ void. Diese Methoden geben alle relevanten Infos aus für das Netzwerk oder auch der HostAdresse, zudem wird hier der jeweilige binäre und hexadezimale Wert angezeigt.
 
 ## NetworkPanel
+
+Dieses JPanel dient dazu um einzelne Netzwerke hinzuzufügen, dafür gibt es eine Textfelder Maske in der ein Netzwerk eingetragen werden kann. Zusätzlich können relevante Informationen zum Netzwerk in einem neuen Fenster angezeigt werden.
+
+Das NetworkPanel erbt von JPanel und enthält diverse Attribute.
+Ein JTabbedPane, ein JSONArray, eine DefaultListModel und eine ArrayList. Der DefaultListModel und die ArrayList sind jeweilis vom Typ static, damit auf diese direkt zugegriffen werden kann. Der DefaultListModel enthält Strings und die ArrayList SubnetPanels.
+Der Konstruktor vom NetworkPanel hat als Parameter ein NetworkCalculator und ein JSONArray. Damit auf die Methoden des NetworkCalculator zugegriffen werden kann wird dieser übergeben, das JSONArray enthält die bereits vorhandenen Netzwerke. In dem NetworkPanel wird ein MouseListener implementiert welcher ein Doppelklick auf die Netzwerke ermöglicht, um ein SubnetPanel zu öffnen, welcher als Tab angezeigt wird.  
+Die Methode *openNewSubnet* öffnet ein neues Subnetz und erwartet als Parameter eine JList und ein NetworkCalculator. Die Jlist enthält die Netzwerke und mittels des NetworkCalculators wird überprüft ob, ein neues Tab geöffnet werden muss oder nicht.
+Um einen Wert aus ArrayList zu entfernen gibt es die statische Methode *removeEntryFromArrayList* welche ein int erwartet. Damit ein Value zur ArrayList hinzugefügt werden kann gibt es die statische Methode *addEntryToArrayList* welche auch ein int erwartet
+
+
 ## Hostpanel
 Die Klasse Hostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.
 Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als static gespeichert.
@@ -35,3 +45,4 @@ Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als sta
 ## SubnetPanel
 Die Klasse SubnetPanel erbt vom JPanel. Das Panel enthält die Subnetzadressen mit dem jeweilligen Prefix, drei Buttons um mit dem Subnetzen zu interagieren und es besteht die Möglichkeit eine neues Subnetz mit einer x Anzahl an Hosts zu erstellen.
 Als Variable enthält das SubnetPanel ein tabbedPane vom Typ JTabbedPane, welches ebenfalls direkt instanziiert wird.
+Das Panel enthält

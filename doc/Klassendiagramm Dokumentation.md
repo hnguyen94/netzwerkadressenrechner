@@ -9,3 +9,12 @@ Die Methode *getAllIPsInNetwork* hat zwei verschiedene Anwendungsfälle einmal u
 Die Subnetzmaske bilden wir aus den Präfix, dieser wiederum kann mittels zweier Methoden ermittelt werden, *getPrefixFromAmountOfHosts* und *getPrefixFromCompleteNetwork*.
 Die Methode *getNewFreeIPAfterNetwork* wird dazu verwendet um im SubnetPanel zu ermitteln welche IP-Addresse für das nächste Subnetz frei wäre.
 Damit die Subnetze auch richtig geordnet angezeigt werden, gibt es hierfür die Methode *sortNetworksInModel*, sodass die Netzwerke nach ihrer Größe sortiert werden.
+
+
+## Hostpanel
+Die KlasseHostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.
+Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als static gespeichert.
+*HostPanel* wird von NetworkCalculator instanziiert, die folgende Parameter brauchen:
+  - Netzwerkadresse(String)
+  - Subnetzadresse(String)
+  - JSONArray(data) ??

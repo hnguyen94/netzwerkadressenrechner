@@ -130,6 +130,7 @@ public class SubnetPanel extends JPanel {
                 tabbedPane.remove(selectedTabIndex);
             }
             model.removeElement(currentSelectedTitle);
+            updateFreeAddressesLabel();
         });
 
         // Show more Information from selected Subnet

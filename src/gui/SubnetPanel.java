@@ -18,6 +18,7 @@ public class SubnetPanel extends JPanel {
     private DefaultListModel<String> model = new DefaultListModel<>();
     private static ArrayList<HostPanel> hostPanels = new ArrayList<>();
     private JSONArray data;
+    private JLabel freeAddressesLabel = new JLabel("Freie Adressen: XXX");
 
 
     public SubnetPanel(String network, NetworkCalculator networkCalculator, JSONArray data) {
@@ -154,7 +155,6 @@ public class SubnetPanel extends JPanel {
                 int prefixAccordingToTheHosts = Converter.getPrefixFromAmountOfHosts(minAmountOfHosts);
 
                 // if model is not empty
-
                 if (model.getSize() != 0) {
                     boolean checker = false;
                     String[] allCurrentSubnets = new String[model.getSize()];
@@ -193,10 +193,23 @@ public class SubnetPanel extends JPanel {
                     String newNetworkBuilder = network.split("/")[0] + "/" + prefixAccordingToTheHosts;
                     model.addElement(newNetworkBuilder);
                 }
+
+                // Set TextField Content to Default
+                amountOfHostsTextField.setText("");
+
+                // Update FreeAdresses Label
+                updateFreeAddressesLabel();
             }
         });
 
+        // JPanel for SubnetInformation
+        JPanel subnetInformation = new JPanel();
+        subnetInformation.add(freeAddressesLabel);
+        updateFreeAddressesLabel();
+
+
         // Adding Elements to the different Panels
+        add(subnetInformation, BorderLayout.PAGE_START);
         add(scrollPane, BorderLayout.CENTER);
         openDeleteButtonPanel.add(openSubnetPanelButton);
         openDeleteButtonPanel.add(deleteSubnetPanelButton);
@@ -239,6 +252,25 @@ public class SubnetPanel extends JPanel {
 
     public static void addEntryToArrayList(HostPanel hostPanel) {
         hostPanels.add(hostPanel);
+    }
+
+    private void updateFreeAddressesLabel() {
+        String[] allIPsInNetwork = Converter.getAllIPsInNetwork(networkTitle);
+        int amountOfFreeAddressesInNetwork = allIPsInNetwork.length;
+
+
+        for (int i = 0; i < model.size(); i++) {
+            String currentSubnet = model.getElementAt(i);
+            String[] allIPsInCurrentSubnet = Converter.getAllIPsInNetwork(currentSubnet);
+            int amountOfAddressesInCurrentSubnet = allIPsInCurrentSubnet.length;
+
+            amountOfFreeAddressesInNetwork -= amountOfAddressesInCurrentSubnet;
+        }
+
+        String contentText = "Freie IP Adressen: " + String.valueOf(amountOfFreeAddressesInNetwork);
+        freeAddressesLabel.setText(contentText);
+
+
     }
 
     /*

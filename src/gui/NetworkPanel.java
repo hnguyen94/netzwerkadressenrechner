@@ -154,6 +154,8 @@ public class NetworkPanel extends JPanel {
                 } else {
                     stringBuilder.append(currentBlock);
                 }
+                // Set TextField Content to Default
+                textFields[i].setText("");
             }
 
             String newNetwork = stringBuilder.toString();

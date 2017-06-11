@@ -184,6 +184,30 @@ public class SubnetPanel extends JPanel {
                         }
                     }
 
+                    if (!checker) {
+                        long lastPossibleNetwork = Converter.ipToLong(model.getElementAt(model.size() - 1));
+                        long broadCastFromNetworkAsLong = Converter.ipToLong(Converter.getBroadcastFromNetwork(network));
+
+                        for (int i = (int) lastPossibleNetwork; i < broadCastFromNetworkAsLong; i++) {
+                            String possibleNewNetwork = Converter.longToIP(i) + "/" + prefixAccordingToTheHosts;
+                            System.out.println(possibleNewNetwork);
+                            if (Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
+                                if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
+
+                                    model.addElement(possibleNewNetwork);
+                                    // sort the elements from the model
+                                    String[] sortedElements = Converter.sortNetworksInModel(model);
+                                    model.removeAllElements();
+                                    for (String sortedElement : sortedElements) {
+                                        model.addElement(sortedElement);
+                                    }
+                                    checker = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
                     // if not possible to generate new subnet network
                     if (!checker) {
                         JOptionPane.showMessageDialog(null, "Subnetz kann nicht angelegt werden!",
@@ -259,20 +283,26 @@ public class SubnetPanel extends JPanel {
      * Updates the Free Adress Label on the top
      */
     private void updateFreeAddressesLabel() {
-        String[] allIPsInNetwork = Converter.getAllIPsInNetwork(networkTitle);
-        int amountOfFreeAddressesInNetwork = allIPsInNetwork.length;
+        try {
+            String[] allIPsInNetwork = Converter.getAllIPsInNetwork(networkTitle);
+            int amountOfFreeAddressesInNetwork = allIPsInNetwork.length;
 
 
-        for (int i = 0; i < model.size(); i++) {
-            String currentSubnet = model.getElementAt(i);
-            String[] allIPsInCurrentSubnet = Converter.getAllIPsInNetwork(currentSubnet);
-            int amountOfAddressesInCurrentSubnet = allIPsInCurrentSubnet.length;
+            for (int i = 0; i < model.size(); i++) {
+                String currentSubnet = model.getElementAt(i);
+                String[] allIPsInCurrentSubnet = Converter.getAllIPsInNetwork(currentSubnet);
+                long amountOfAddressesInCurrentSubnet = allIPsInCurrentSubnet.length;
 
-            amountOfFreeAddressesInNetwork -= amountOfAddressesInCurrentSubnet;
+                amountOfFreeAddressesInNetwork -= amountOfAddressesInCurrentSubnet;
+            }
+
+            String contentText = "<html>Freie IP Adressen: <b>" + String.valueOf(amountOfFreeAddressesInNetwork) + "</b></html>";
+            freeAddressesLabel.setText(contentText);
+        } catch (Exception e) {
+            String contentText = "<html>Freie IP Adressen: <b>viele</b>";
+            freeAddressesLabel.setText(contentText);
         }
 
-        String contentText = "<html>Freie IP Adressen: <b>" + String.valueOf(amountOfFreeAddressesInNetwork) + "</b></html>";
-        freeAddressesLabel.setText(contentText);
 
 
     }

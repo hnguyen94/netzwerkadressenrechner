@@ -9,3 +9,18 @@ Die Methode *getAllIPsInNetwork* hat zwei verschiedene Anwendungsfälle einmal u
 Die Subnetzmaske bilden wir aus den Präfix, dieser wiederum kann mittels zweier Methoden ermittelt werden, *getPrefixFromAmountOfHosts* und *getPrefixFromCompleteNetwork*.
 Die Methode *getNewFreeIPAfterNetwork* wird dazu verwendet um im SubnetPanel zu ermitteln welche IP-Addresse für das nächste Subnetz frei wäre.
 Damit die Subnetze auch richtig geordnet angezeigt werden, gibt es hierfür die Methode *sortNetworksInModel*, sodass die Netzwerke nach ihrer Größe sortiert werden.
+
+## NetworkCalculator
+
+Der NetworkCalculator erbt von JFrame, in welchem die einzelnen JPanels hinzugefügt werden.
+Als Variable enthält der NetworkCalculator ein tabbedPane vom Typ JTabbedPane, welches direkt instanziert wird.
+Der Kostruktor ertwartet ein String und ein JSONArray, der String enthält den Titel und das JSONArray die einzelnen Netzwerke. Zudem wird im Konstruktor ein ChangeListener hinzugefügt, welcher überprüft ob ein Tab geschlossen wurde.
+Außerdem werden hier die grundlegenden Design-Einstellungen getätigt.
+
+Desweiteren wurde hier die Speichermöglichkeit implementiert. Wenn das Programm geschlossen wird, werden alle eingetragenen Netzwerke gespeichert, sodass diese später wieder eingelesen werden können.
+
+Damit auf die einzelnen Tabs des tabbedPane einfacher wieder zugegriffen werden kann, wurde die Methode *getTabIndexFromTitle* implementiert, welcher ein JTabbedPane und ein String erwartet. Mittels des Strings wird dann der jeweilige Tab ermittelt und zurückgegeben.
+
+Die Methoden *showMoreInformationAboutNetwork* und *showMoreInformationAboutTheHostIP* erwarten jeweils einen String und sind vom Typ void. Diese Methoden geben alle relevanten Infos aus für das Netzwerk oder auch der HostAdresse, zudem wird hier der jeweilige binäre und hexadezimale Wert angezeigt.
+
+## NetworkPanel

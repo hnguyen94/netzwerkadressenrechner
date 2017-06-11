@@ -255,6 +255,9 @@ public class SubnetPanel extends JPanel {
         hostPanels.add(hostPanel);
     }
 
+    /**
+     * Updates the Free Adress Label on the top
+     */
     private void updateFreeAddressesLabel() {
         String[] allIPsInNetwork = Converter.getAllIPsInNetwork(networkTitle);
         int amountOfFreeAddressesInNetwork = allIPsInNetwork.length;
@@ -268,7 +271,7 @@ public class SubnetPanel extends JPanel {
             amountOfFreeAddressesInNetwork -= amountOfAddressesInCurrentSubnet;
         }
 
-        String contentText = "Freie IP Adressen: " + String.valueOf(amountOfFreeAddressesInNetwork);
+        String contentText = "<html>Freie IP Adressen: <b>" + String.valueOf(amountOfFreeAddressesInNetwork) + "</b></html>";
         freeAddressesLabel.setText(contentText);
 
 

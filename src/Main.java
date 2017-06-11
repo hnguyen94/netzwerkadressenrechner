@@ -11,8 +11,9 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         JSONParser parser = new JSONParser();
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         try {
             Object obj = parser.parse(new FileReader("data.json"));

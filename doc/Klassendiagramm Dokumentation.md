@@ -43,4 +43,10 @@ Das HostPanel implementiert zudem ein MouseListener, welcher bei Doppelklick auf
 ## SubnetPanel
 Die Klasse SubnetPanel erbt vom JPanel. Das Panel enthält die Subnetzadressen mit dem jeweilligen Prefix, drei Buttons um mit dem Subnetzen zu interagieren und es besteht die Möglichkeit eine neues Subnetz mit einer x Anzahl an Hosts zu erstellen.
 Als Variable enthält das SubnetPanel ein tabbedPane vom Typ JTabbedPane, welches ebenfalls direkt instanziiert wird.
-Das Panel enthält
+Das Panel enthält..
+
+## NetworkAddressValidator
+Die Klasse prüft, ob die Netzwerkadressen korrekt sind.
+NETWORK_ADDRES wird als private static final deklariert, da diese Variable nur innerhalb der Klasse verfügbar ist. Die Variable enthält den validen REGEX für eine Netzwerkadresse.
+Um die eingegebene Netzwerkadresse zu prüfen, gibt es die Methode *validate*.
+Der prüft dann mit dem REGEX NETWORK_ADDRESS den eingebenen String und gibt ein Boolean zurück

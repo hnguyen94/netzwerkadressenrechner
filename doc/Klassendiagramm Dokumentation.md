@@ -42,5 +42,5 @@ Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als sta
   - Subnetzadresse(String)
   - JSONArray(data) ??
 
- ## SubnetPanel
+## SubnetPanel
 Das Panel enthält

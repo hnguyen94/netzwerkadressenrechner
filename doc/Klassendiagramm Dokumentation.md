@@ -24,3 +24,13 @@ Damit auf die einzelnen Tabs des tabbedPane einfacher wieder zugegriffen werden 
 Die Methoden *showMoreInformationAboutNetwork* und *showMoreInformationAboutTheHostIP* erwarten jeweils einen String und sind vom Typ void. Diese Methoden geben alle relevanten Infos aus für das Netzwerk oder auch der HostAdresse, zudem wird hier der jeweilige binäre und hexadezimale Wert angezeigt.
 
 ## NetworkPanel
+## Hostpanel
+Die Klasse Hostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.
+Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als static gespeichert.
+*HostPanel* wird von NetworkCalculator instanziiert, die folgende Parameter brauchen:
+  - Netzwerkadresse(String)
+  - Subnetzadresse(String)
+  - JSONArray(data) ??
+
+<!-- ## SubnetPanel
+Das Panel enthält -->

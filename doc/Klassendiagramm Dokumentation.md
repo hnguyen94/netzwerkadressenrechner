@@ -10,6 +10,13 @@ Die Subnetzmaske bilden wir aus den Präfix, dieser wiederum kann mittels zweier
 Die Methode *getNewFreeIPAfterNetwork* wird dazu verwendet um im SubnetPanel zu ermitteln welche IP-Addresse für das nächste Subnetz frei wäre.
 Damit die Subnetze auch richtig geordnet angezeigt werden, gibt es hierfür die Methode *sortNetworksInModel*, sodass die Netzwerke nach ihrer Größe sortiert werden.
 
+## NetworkAddressValidator
+
+Die Klasse prüft, ob die Netzwerkadressen korrekt sind.
+NETWORK_ADDRES wird als private static final deklariert, da diese Variable nur innerhalb der Klasse verfügbar ist. Die Variable enthält den validen REGEX für eine Netzwerkadresse.
+Um die eingegebene Netzwerkadresse zu prüfen, gibt es die Methode *validate*.
+Der prüft dann mit dem REGEX NETWORK_ADDRESS den eingebenen String und gibt ein Boolean zurück
+
 ## NetworkCalculator
 
 Der NetworkCalculator erbt von JFrame, in welchem die einzelnen JPanels hinzugefügt werden.
@@ -43,7 +50,6 @@ Die Methode *openNewHostPanel* erwartet eine JList und ein NetworkCalculator um 
 Um Werte zu der ArrayList hinzuzufügen gibt es die Methode *addEntryToArrayList*, welche ein HostPanel erwartet. Um einen Wert zu löschen *removeEntryFromArrayList*, welche ein int erwartet.
 Damit man weiß welche IP-Addressen im Netzwerk noch frei sind gibt es die Methode *updateFreeAddressesLabel*.  
 Das SubnetPanel enthält vier verschiedene anonyme ActionListener. Ein Listener führt die Methode *openNewHostPanel* aus, einer löscht ein Subnetz, der nächste dient dazu zusätzliche Informationen anzuzeigen, der andere überprüft beim anlegen eines Subnetztes ob dies möglich ist und fügt es dann hinzu oder nicht.
-
 
 ## Hostpanel
 Die Klasse Hostepanel erbt vom JPanel. Wie der Name schon sagt, enthält das Panel nur die verfügbaren Hosts.

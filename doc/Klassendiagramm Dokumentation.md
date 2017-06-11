@@ -13,7 +13,7 @@ Damit die Subnetze auch richtig geordnet angezeigt werden, gibt es hierfür die 
 ## NetworkCalculator
 
 Der NetworkCalculator erbt von JFrame, in welchem die einzelnen JPanels hinzugefügt werden.
-Als Variable enthält der NetworkCalculator ein tabbedPane vom Typ JTabbedPane, welches direkt instanziert wird.
+Als Variable enthält der NetworkCalculator ein tabbedPanel vom Typ JTabbedPane, welches direkt instanziert wird.
 Der Kostruktor ertwartet ein String und ein JSONArray, der String enthält den Titel und das JSONArray die einzelnen Netzwerke. Zudem wird im Konstruktor ein ChangeListener hinzugefügt, welcher überprüft ob ein Tab geschlossen wurde.
 Außerdem werden hier die grundlegenden Design-Einstellungen getätigt.
 
@@ -32,5 +32,6 @@ Die Hosts und die dazugehörigen Notizen werden in einer DefaulListModel als sta
   - Subnetzadresse(String)
   - JSONArray(data) ??
 
-<!-- ## SubnetPanel
-Das Panel enthält -->
+## SubnetPanel
+Die Klasse SubnetPanel erbt vom JPanel. Das Panel enthält die Subnetzadressen mit dem jeweilligen Prefix, drei Buttons um mit dem Subnetzen zu interagieren und es besteht die Möglichkeit eine neues Subnetz mit einer x Anzahl an Hosts zu erstellen.
+Als Variable enthält das SubnetPanel ein tabbedPane vom Typ JTabbedPane, welches ebenfalls direkt instanziiert wird.

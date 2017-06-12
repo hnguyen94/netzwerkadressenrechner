@@ -190,7 +190,6 @@ public class SubnetPanel extends JPanel {
 
                         for (int i = (int) lastPossibleNetwork; i < broadCastFromNetworkAsLong; i++) {
                             String possibleNewNetwork = Converter.longToIP(i) + "/" + prefixAccordingToTheHosts;
-                            System.out.println(possibleNewNetwork);
                             if (Converter.checkIfPossibleNewNetwork(allCurrentSubnets, possibleNewNetwork)) {
                                 if (Converter.ipToLong(Converter.getBroadcastFromNetwork(network)) >= Converter.ipToLong(Converter.getBroadcastFromNetwork(possibleNewNetwork))) {
 

@@ -4,10 +4,10 @@ public class NetworkAddressValidator {
 
     private static final String NETWORK_ADDRESS =
             "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/" +
-            "([0-9]|1[0-9]|2[0-9]|3[0-2])$";
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/" +
+                    "([0-9]|1[0-9]|2[0-9]|3[0-2])$";
 
     /**
      *
@@ -33,12 +33,18 @@ public class NetworkAddressValidator {
                 return false;
             }
 
-            binarySubnetMask.append(Integer.toBinaryString(character));
+            String blockAsBinaryString = Integer.toBinaryString(character);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int j = 0; j < 8 - blockAsBinaryString.length(); j++) {
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(blockAsBinaryString);
+
+            binarySubnetMask.append(stringBuilder.toString());
         }
 
         String[] binarySubnetSplit = binarySubnetMask.toString().split("0", 2);
         return !(binarySubnetSplit[1].contains("1"));
-
     }
 
 }

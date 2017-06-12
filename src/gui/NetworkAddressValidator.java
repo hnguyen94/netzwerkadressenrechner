@@ -44,7 +44,11 @@ public class NetworkAddressValidator {
         }
 
         String[] binarySubnetSplit = binarySubnetMask.toString().split("0", 2);
-        return !(binarySubnetSplit[1].contains("1"));
+        try {
+            return !(binarySubnetSplit[1].contains("1"));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
 }
